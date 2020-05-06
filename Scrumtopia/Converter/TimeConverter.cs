@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Scrumtopia.Converter
 {
-    class DateTimeConverter
+    class TimeConverter
     { 
         
         /// <summary>
