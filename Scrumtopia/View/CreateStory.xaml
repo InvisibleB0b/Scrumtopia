@@ -1,0 +1,59 @@
+﻿<Page
+    x:Class="Scrumtopia.View.CreateStory"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Scrumtopia.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="1*"/>
+        <RowDefinition Height="10*"/>
+        <RowDefinition Height="1*"/>
+    </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <!--
+        Dette er til at oprette og rette user stories
+        --> 
+        <StackPanel Grid.Row="1" Grid.Column="2">
+        <StackPanel>
+            <TextBlock Text="Story name"/>
+            <TextBox Text="Skriv tekst"/>
+        </StackPanel>
+        <StackPanel >
+            <TextBlock Text="Description"/>
+            <TextBox Text="Skriv tekst"/>
+        </StackPanel>
+            <StackPanel >
+                <TextBlock Text="Story points"/>
+                <TextBox Text="Skriv tekst"/>
+            </StackPanel>
+            <StackPanel >
+                <TextBlock Text="Category"/>
+                <GridView/>
+            </StackPanel>
+            <StackPanel >
+                <TextBlock Text="Assignee"/>
+                <TextBox Text="Skriv tekst"/>
+            </StackPanel>
+        </StackPanel>
+
+        <!--
+        Dette er til at oprette og rette kategorier
+        --> 
+
+
+    </Grid>
+</Page>

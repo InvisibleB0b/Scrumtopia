@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Scrumtopia_classes
 {
-    class Task
+   public class StoryTask
     {
         public int Task_Id { get; set; }
         public string Task_Name { get; set; }

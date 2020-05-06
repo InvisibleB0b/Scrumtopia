@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Scrumtopia_classes
 {
-    class Category
+    public class Category
     {
         public int Category_Id { get; set; }
         public string Category_Color { get; set; }

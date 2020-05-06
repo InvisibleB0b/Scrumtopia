@@ -124,7 +124,11 @@
     <Compile Include="Persistency\ProjectsPer.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModel\CreateStoryVM.cs" />
     <Compile Include="ViewModel\ProjectsVM.cs" />
+    <Compile Include="View\CreateStory.xaml.cs">
+      <DependentUpon>CreateStory.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\Projects.xaml.cs">
       <DependentUpon>Projects.xaml</DependentUpon>
     </Compile>
@@ -149,6 +153,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="View\CreateStory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="View\Projects.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

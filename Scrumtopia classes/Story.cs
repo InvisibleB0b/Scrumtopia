@@ -17,7 +17,7 @@ namespace Scrumtopia_classes
         public string Story_State { get; set; }
         public User Story_Referee { get; set; }
         public User Story_Asignee { get; set; }
-        public List<Task> Tasks { get; set; }
+        public List<StoryTask> Tasks { get; set; }
 
 
         public override string ToString()
