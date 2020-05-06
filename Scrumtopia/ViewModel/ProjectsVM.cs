@@ -9,16 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Scrumtopia.Annotations;
 using Scrumtopia.Common;
-using Scrumtopia_classes;
 using Scrumtopia.Converter;
 using Scrumtopia.Persistency;
+using Scrumtopia_classes;
 
 namespace Scrumtopia.ViewModel
 {
-    class ProjectsVM:INotifyPropertyChanged
+    class ProjectsVM
     {
-       
-
         #region Project props
         private string _projectName;
         private string _projectDescription;
