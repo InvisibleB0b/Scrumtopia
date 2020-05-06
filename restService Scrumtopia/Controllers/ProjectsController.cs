@@ -17,16 +17,41 @@ namespace restService_Scrumtopia.Controllers
         // GET api/Projects
         public List<Project> Get()
         {
-            List<Project> projects = new List<Project>();
-
-
+            List<Project> projects = new List<Project>(); 
             return projects;
         }
 
         // GET api/Projects/5
-        public string Get(int id)
+        public List<Project> Get(int id)
         {
-            return "value";
+            List<Project> projects = new List<Project>();
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+
+
+                string queryString = $"SELECT * FROM Projects WHERE Project_Id IN (SELECT Project_Id FROM Project_User_Relation WHERE User_Id =  {id})";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    Project p = new Project()
+                    {
+                        Project_Id = (int)reader["Project_Id"],
+                        Project_Name = (string)reader["Project_Name"],
+                        Project_Description = (string)reader["Project_Description"],
+                        Project_Deadline = (DateTime)reader["Project_Deadline"]
+                    };
+                    projects.Add(p);
+                }
+
+
+
+                command.Connection.Close();
+            }
+            return projects;
         }
 
         // POST api/Projects

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Scrumtopia_classes
 {
-   public class User
+   public class ScrumUser
     {
         public int User_Id { get; set; }
         public string User_Name { get; set; }

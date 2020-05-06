@@ -53,11 +53,28 @@ namespace Scrumtopia.ViewModel
 
         public ICommand CreateCommand { get; set; }
 
+        public Singleton LeSingleton { get; set; }
+
 
         public ProjectsVM()
         {
             Projects = new ObservableCollection<Project>();
             CreateCommand = new RelayCommand(CreateProject);
+            LeSingleton = Singleton.Instance;
+            LoadProjects();
+        }
+
+        public async void LoadProjects()
+        {
+            List<Project> leProjects = await ProjectsPer.GetProjects(LeSingleton.LoggedUser.User_Id);
+
+            if (leProjects != null)
+            {
+                foreach (Project leProject in leProjects)
+                {
+                    Projects.Add(leProject);
+                }
+            }
         }
 
         public async void CreateProject()

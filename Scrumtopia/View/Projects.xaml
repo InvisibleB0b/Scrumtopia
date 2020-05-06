@@ -5,14 +5,14 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:Scrumtopia.View"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:model ="using:Scrumtopia.ViewModel"
+    xmlns:viewModel="using:Scrumtopia.ViewModel"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
     <Page.DataContext>
-        <model:ProjectsVM/>
+        <viewModel:ProjectsVM />
     </Page.DataContext>
-    
+
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -34,7 +34,9 @@
         <ListView
             Grid.Row="1"
             Grid.Column="1"
-            ItemsSource="{Binding Projects, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            ItemsSource="{Binding Projects, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectedItem="{Binding LeSingleton.SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectionMode="Single" />
 
 
         <!--
@@ -64,6 +66,7 @@
                 <TimePicker Time="{Binding Project_DeadlineTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
             <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Opret" />
+            <Button Click="Open_Project" Content="åben projekt" />
         </StackPanel>
 
 

@@ -15,8 +15,8 @@ namespace Scrumtopia_classes
         public int Story_Points { get; set; }
         public int Story_Priority { get; set; }
         public string Story_State { get; set; }
-        public User Story_Referee { get; set; }
-        public User Story_Asignee { get; set; }
+        public ScrumUser Story_Referee { get; set; }
+        public ScrumUser Story_Asignee { get; set; }
         public List<StoryTask> Tasks { get; set; }
 
 

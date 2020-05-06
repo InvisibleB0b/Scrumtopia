@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.Devices.PointOfService;
 using Windows.System;
 using Scrumtopia.Annotations;
 using Scrumtopia.Common;
@@ -19,18 +20,24 @@ namespace Scrumtopia.ViewModel
     {
         #region CreateStory Properties
 
+        private ScrumUser _scrumUser;
         private Category _storyCategory;
         private string _storyName;
         private string _storyDescription;
         private int _storyPoints;
         private int _storyPriority;
-        private User _storyAsignee;
+        private ScrumUser _storyAsignee;
         private List<StoryTask> _tasks;
 
         public Category Story_CategoryVM
         {
             get => _storyCategory;
             set { _storyCategory = value; OnPropertyChanged(); }
+        }
+        public ScrumUser AssigneeVM
+        {
+            get => _scrumUser;
+            set { _scrumUser = value; OnPropertyChanged(); }
         }
 
         public string Story_NameVM
@@ -57,7 +64,7 @@ namespace Scrumtopia.ViewModel
             set { _storyPriority = value; OnPropertyChanged(); }
         }
 
-        public User Story_AsigneeVM
+        public ScrumUser Story_AsigneeVM
         {
             get => _storyAsignee;
             set { _storyAsignee = value; OnPropertyChanged(); }
@@ -71,17 +78,59 @@ namespace Scrumtopia.ViewModel
         #endregion
 
         public ObservableCollection<Story> Stories { get; set; }
-        public ICommand CreaCommand { get; set; }
+
+        public ICommand CreateCommand { get; set; }
+
+        public ObservableCollection<Category> CategoriesForStory { get; set; }
+
+        public Singleton LeSingleton { get; set; }
+
+        public List<ScrumUser> UsersInProject { get; set; }
+
+
 
         public CreateStoryVM()
         {
             Stories = new ObservableCollection<Story>();
-            CreaCommand = new RelayCommand(CreateStory);
+            CreateCommand = new RelayCommand(CreateStory);
+            CategoriesForStory = new ObservableCollection<Category>();
+            LeSingleton = Singleton.Instance;
+            AssigneeVM = new ScrumUser(){User_Id = 0};
+            UsersInProject = new List<ScrumUser>();
+            LoadCategories();
+            LoadUsers();
         }
+
+        public async void LoadUsers()
+        {
+            List<ScrumUser> scrumUsers = await UsersPer.GetProjectUsers(LeSingleton.SelectedProject.Project_Id);
+            if (scrumUsers!=null)
+            {
+                foreach (ScrumUser scrumUser in scrumUsers)
+                {
+                    UsersInProject.Add(scrumUser);
+                }
+            }
+        }
+
+        public async void LoadCategories()
+        {
+            List<Category> categories = await CategoryPer.GetCategories();
+
+            if (categories != null)
+            {
+                foreach (Category category in categories)
+                {
+                    CategoriesForStory.Add(category);
+                }
+            }
+
+        }
+        
 
         public async void CreateStory()
         {
-            Story s = new Story(){Project_Id = 1, Category = null, Story_Asignee = null, Story_Name = Story_NameVM, Story_description = Story_descriptionVM, Story_Points = Story_PointsVM, Story_Priority = Story_PriorityVM, Story_State = "ToDo"};
+            Story s = new Story(){Project_Id = LeSingleton.SelectedProject.Project_Id, Category = Story_CategoryVM, Story_Asignee = AssigneeVM, Story_Name = Story_NameVM, Story_description = Story_descriptionVM, Story_Points = Story_PointsVM, Story_Priority = Story_PriorityVM, Story_State = "ToDo", Story_Referee = LeSingleton.LoggedUser};
 
             Story storyToAdd = await StoryPer.Create(s);
 

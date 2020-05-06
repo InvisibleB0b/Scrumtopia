@@ -120,9 +120,12 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Common\Relaycommand.cs" />
+    <Compile Include="Common\Singleton.cs" />
     <Compile Include="Converter\TimeConverter.cs" />
+    <Compile Include="Persistency\CategoryPer.cs" />
     <Compile Include="Persistency\ProjectsPer.cs" />
     <Compile Include="Persistency\StoryPer.cs" />
+    <Compile Include="Persistency\UsersPer.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\CreateStoryVM.cs" />
