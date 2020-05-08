@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Scrumtopia.Persistency
 {
-     static class SprintsPer
+    static class SprintsPer
     {
         private const string Serverurl = "http://localhost:52512/";
 
@@ -48,6 +48,45 @@ namespace Scrumtopia.Persistency
                 }
 
             }
+        }
+
+        public static async Task<Sprint> Create(Sprint sprint, int project_Id)
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+
+            handler.UseDefaultCredentials = true;
+
+            using (var client = new HttpClient(handler))
+            {
+
+                client.BaseAddress = new Uri(Serverurl);
+
+                client.DefaultRequestHeaders.Clear();
+
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("aplication/json"));
+
+                try
+                {
+                    var response = await client.PostAsJsonAsync($"/api/Sprints?project_Id={project_Id}", sprint);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return response.Content.ReadAsAsync<Sprint>().Result;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+
+            }
+
         }
     }
 }

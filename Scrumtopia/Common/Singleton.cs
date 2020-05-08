@@ -10,11 +10,11 @@ using Scrumtopia_classes;
 
 namespace Scrumtopia.Common
 {
-    class Singleton:INotifyPropertyChanged
+  public class Singleton:INotifyPropertyChanged
     {
         private static Singleton _instance = null;
         private Project _selectedProject;
-
+        private Sprint _selectedSprint;
 
         public static Singleton Instance
         {
@@ -30,6 +30,11 @@ namespace Scrumtopia.Common
         {
             get { return _selectedProject; }
             set { _selectedProject = value; OnPropertyChanged();}
+        }
+        public Sprint SelectedSprint
+        {
+            get { return _selectedSprint; }
+            set { _selectedSprint = value; OnPropertyChanged();}
         }
 
         public ScrumUser LoggedUser { get; set; }

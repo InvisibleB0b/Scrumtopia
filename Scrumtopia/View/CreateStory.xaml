@@ -11,6 +11,51 @@
     <Page.DataContext>
         <model:CreateStoryVM />
     </Page.DataContext>
+
+    <Page.Resources>
+
+        <DataTemplate x:Key="StoriesTemp">
+            <StackPanel
+                Margin="10,5"
+                Padding="5"
+                Background="{Binding Category.Category_Color}"
+                BorderBrush="DarkGray"
+                BorderThickness="2"
+                CornerRadius="10"
+                Orientation="Vertical">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontWeight="Bold" Text="Story Name : " />
+                    <TextBlock Text="{Binding Story_Name}" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontWeight="Bold" Text="Story Description : " />
+                    <TextBlock Text="{Binding Story_description}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story Points : " />
+                    <TextBlock Text="{Binding Story_Points}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story Priority : " />
+                    <TextBlock Text="{Binding Story_Priority}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story State : " />
+                    <TextBlock Text="{Binding Story_State}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story Asignee : " />
+                    <TextBlock Text="{Binding Story_Asignee.User_Name}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story Referee : " />
+                    <TextBlock Text="{Binding Story_Referee.User_Name}" />
+                </StackPanel>
+            </StackPanel>
+        </DataTemplate>
+
+
+    </Page.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
@@ -79,6 +124,7 @@
         <GridView
             Grid.Row="1"
             Grid.Column="1"
+            ItemTemplate="{StaticResource StoriesTemp}"
             ItemsSource="{Binding Stories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
     </Grid>

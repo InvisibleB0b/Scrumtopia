@@ -10,6 +10,7 @@ namespace Scrumtopia_classes
         public DateTime Sprint_Start { get; set; }
         public DateTime Sprint_End { get; set; }
         public string Sprint_Goal { get; set; }
+        public List<int> Story_Ids { get; set; }
 
         public override string ToString()
         {

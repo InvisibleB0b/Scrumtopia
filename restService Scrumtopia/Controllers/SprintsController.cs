@@ -53,10 +53,36 @@ namespace restService_Scrumtopia.Controllers
         }
 
         // POST api/Stories
-        public Sprint Post([FromBody]Sprint value)
+        public Sprint Post([FromBody]Sprint value, int project_Id)
         {
             Sprint s = new Sprint();
+            string startDateInsert = value.Sprint_Start.ToString("yyyy - MM - dd HH: mm:ss");
+            string endDateInsert = value.Sprint_End.ToString("yyyy - MM - dd HH: mm:ss");
+            string idList = "0";
 
+            foreach (int i in value.Story_Ids)
+            {
+                idList += "," + i.ToString() + " ";
+            }
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string queryString = $@"INSERT INTO Sprints VALUES('{startDateInsert}', {project_Id}, '{endDateInsert}', '{value.Sprint_Goal}') UPDATE Stories SET Sprint_Id = (SELECT Sprint_Id FROM Sprints WHERE Sprint_Id = @@IDENTITY) WHERE Story_Id IN ({idList}) SELECT * FROM Sprints WHERE Sprint_Id = @@IDENTITY";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    
+                        s.Sprint_Id = (int)reader["Sprint_Id"];
+                        s.Sprint_Goal = (string) reader["Sprint_Goal"];
+                        s.Sprint_Start = (DateTime) reader["Sprint_Start"];
+                        s.Sprint_End = (DateTime) reader["Sprint_End"];
+
+                }
+
+                command.Connection.Close();
+            }
 
             return s;
         }

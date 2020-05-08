@@ -97,8 +97,22 @@ namespace Scrumtopia.ViewModel
             LeSingleton = Singleton.Instance;
             AssigneeVM = new ScrumUser(){User_Id = 0};
             UsersInProject = new List<ScrumUser>();
+            LoadStories();
             LoadCategories();
             LoadUsers();
+        }
+
+        public async void LoadStories()
+        {
+            List<Story> st = await StoryPer.LoadBacklog(LeSingleton.SelectedProject.Project_Id);
+
+            if (st!= null)
+            {
+                foreach (Story storey in st)
+                {
+                    Stories.Add(storey);
+                }
+            }
         }
 
         public async void LoadUsers()

@@ -12,7 +12,30 @@
     <Page.DataContext>
         <viewModel:ProjectsVM />
     </Page.DataContext>
+    <Page.Resources>
 
+        <DataTemplate x:Key="ProjectsTemp">
+
+            <StackPanel
+                Margin="5"
+                Padding="5"
+                Orientation="Vertical">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Name : " />
+                    <TextBlock Text="{Binding Project_Name}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Description : " />
+                    <TextBlock Text="{Binding Project_Description}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Deadline : " />
+                    <TextBlock Text="{Binding Project_Deadline}" />
+                </StackPanel>
+            </StackPanel>
+
+        </DataTemplate>
+    </Page.Resources>
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -34,6 +57,7 @@
         <ListView
             Grid.Row="1"
             Grid.Column="1"
+            ItemTemplate="{StaticResource ProjectsTemp}"
             ItemsSource="{Binding Projects, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectedItem="{Binding LeSingleton.SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectionMode="Single" />

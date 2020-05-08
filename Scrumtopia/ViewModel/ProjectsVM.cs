@@ -61,6 +61,8 @@ namespace Scrumtopia.ViewModel
             Projects = new ObservableCollection<Project>();
             CreateCommand = new RelayCommand(CreateProject);
             LeSingleton = Singleton.Instance;
+            Project_DeadlineDate = TimeConverter.ConvertToDate(DateTime.Now);
+            Project_DeadlineTime = TimeConverter.ConvertToTime(DateTime.Now);
             LoadProjects();
         }
 
