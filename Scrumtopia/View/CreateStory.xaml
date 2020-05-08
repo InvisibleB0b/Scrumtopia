@@ -27,6 +27,14 @@
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
 
+        <Button
+            Grid.Row="0"
+            Grid.Column="0"
+            Click="Back"
+            Content="Tilbage"
+            CornerRadius="10" />
+
+
         <!--
             Dette er til at oprette og rette user stories
         -->
@@ -42,6 +50,10 @@
             <StackPanel>
                 <TextBlock Text="Story points" />
                 <TextBox Text="{Binding Story_PointsVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Story Priority" />
+                <TextBox Text="{Binding Story_PriorityVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
             <StackPanel>
                 <TextBlock Text="Category" />

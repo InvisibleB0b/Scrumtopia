@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Scrumtopia_classes
 {
-    class Sprint
+  public class Sprint
     {
         public int Sprint_Id { get; set; }
         public DateTime Sprint_Start { get; set; }

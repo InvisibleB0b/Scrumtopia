@@ -26,5 +26,10 @@ namespace Scrumtopia.View
         {
             this.InitializeComponent();
         }
+
+        private void Back(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Backlog));
+        }
     }
 }

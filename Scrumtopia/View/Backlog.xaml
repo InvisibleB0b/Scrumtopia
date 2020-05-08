@@ -1,0 +1,152 @@
+﻿<Page
+    x:Class="Scrumtopia.View.Backlog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Scrumtopia.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:Scrumtopia.ViewModel"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+    <Page.DataContext>
+        <model:BacklogVM />
+    </Page.DataContext>
+
+    <Page.Resources>
+        <DataTemplate x:Key="StoriesTemp">
+
+            <StackPanel
+                Margin="10,5"
+                Padding="5"
+                Background="{Binding Category.Category_Color}"
+                BorderBrush="DarkGray"
+                BorderThickness="2"
+                CornerRadius="10"
+                Orientation="Vertical">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontWeight="Bold" Text="Story Name : " />
+                    <TextBlock Text="{Binding Story_Name}" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontWeight="Bold" Text="Story Description : " />
+                    <TextBlock Text="{Binding Story_description}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story Points : " />
+                    <TextBlock Text="{Binding Story_Points}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story Priority : " />
+                    <TextBlock Text="{Binding Story_Priority}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story State : " />
+                    <TextBlock Text="{Binding Story_State}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story Asignee : " />
+                    <TextBlock Text="{Binding Story_Asignee.User_Name}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story Referee : " />
+                    <TextBlock Text="{Binding Story_Referee.User_Name}" />
+                </StackPanel>
+
+
+            </StackPanel>
+        </DataTemplate>
+
+        <DataTemplate x:Key="SprintTemp">
+            <StackPanel
+                Margin="0,10"
+                Padding="5"
+                BorderBrush="DarkSlateGray"
+                BorderThickness="5"
+                CornerRadius="10"
+                Orientation="Vertical">
+                <StackPanel Margin="5">
+                    <TextBlock FontWeight="Bold" Text="Sprint Goal: " />
+                    <TextBlock Text="{Binding Sprint_Goal}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Margin="5">
+                        <TextBlock FontWeight="Bold" Text="Sprint Start: " />
+                        <TextBlock Text="{Binding Sprint_Start}" />
+                    </StackPanel>
+                    <StackPanel Margin="5">
+                        <TextBlock FontWeight="Bold" Text="Sprint Deadline: " />
+                        <TextBlock Text="{Binding Sprint_End}" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+        </DataTemplate>
+
+    </Page.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="2*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <Button
+            Grid.Row="0"
+            Grid.Column="0"
+            Click="Back"
+            Content="Tilbage"
+            CornerRadius="10" />
+
+        <Border
+            Grid.Row="1"
+            Grid.Column="1"
+            BorderBrush="Black"
+            BorderThickness="5">
+            <ListView
+                ItemTemplate="{StaticResource SprintTemp}"
+                ItemsSource="{Binding Sprints, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectionMode="Single" />
+        </Border>
+
+        <Border
+            Grid.Row="1"
+            Grid.Column="2"
+            BorderBrush="Black"
+            BorderThickness="5">
+            <GridView
+                ItemTemplate="{StaticResource StoriesTemp}"
+                ItemsSource="{Binding Stories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectionMode="None" />
+        </Border>
+        <Button
+            Grid.Row="2"
+            Grid.Column="1"
+            Padding="10"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Click="GotoCreateSprint"
+            Content="Opret/Rediger Sprints"
+            CornerRadius="10" />
+        <Button
+            Grid.Row="2"
+            Grid.Column="2"
+            Padding="10"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            HorizontalContentAlignment="Center"
+            VerticalContentAlignment="Center"
+            Click="GotoCreateStory"
+            Content="Opret/Rediger Stories"
+            CornerRadius="10" />
+    </Grid>
+</Page>

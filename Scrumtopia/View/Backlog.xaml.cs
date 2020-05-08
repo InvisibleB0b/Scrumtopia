@@ -20,16 +20,26 @@ namespace Scrumtopia.View
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class Projects : Page
+    public sealed partial class Backlog : Page
     {
-        public Projects()
+        public Backlog()
         {
             this.InitializeComponent();
         }
 
-        private void Open_Project(object sender, RoutedEventArgs e)
+        private void GotoCreateSprint(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(Backlog));
+            throw new NotImplementedException();
+        }
+
+        private void GotoCreateStory(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(CreateStory));
+        }
+
+        private void Back(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Projects));
         }
     }
 }
