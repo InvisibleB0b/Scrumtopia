@@ -22,6 +22,7 @@ namespace Scrumtopia.ViewModel
         public ObservableCollection<Story> SprintBacklog { get; set; }
         public Singleton LeSingleton { get; set; }
         public ObservableCollection<Sprint> Sprints { get; set; }
+        public Story DragStory { get; set; }
 
         public ICommand CreateCommand
         {
@@ -116,6 +117,29 @@ namespace Scrumtopia.ViewModel
                 }
             }
         }
+
+
+        public void MoveStory(string name)
+        {
+
+            switch (name)
+            {
+
+                case "Backlog":
+                    Backlog.Add(DragStory);
+                    SprintBacklog.Remove(DragStory);
+                    
+                    break;
+
+                case "SprintBacklog":
+                    SprintBacklog.Add(DragStory);
+                    Backlog.Remove(DragStory);
+                    break;
+            }
+
+
+        }
+
 
         #region PropChange
         public event PropertyChangedEventHandler PropertyChanged;

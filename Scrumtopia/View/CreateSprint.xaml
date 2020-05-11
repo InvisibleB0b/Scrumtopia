@@ -73,6 +73,33 @@
             </StackPanel>
         </DataTemplate>
 
+        <DataTemplate x:Key="SprintTemp">
+            <StackPanel
+                Margin="0,10"
+                Padding="5"
+                BorderBrush="DarkSlateGray"
+                BorderThickness="5"
+                CornerRadius="10"
+                Orientation="Vertical">
+                <StackPanel Margin="5">
+                    <TextBlock FontWeight="Bold" Text="Sprint Goal: " />
+                    <TextBlock Text="{Binding Sprint_Goal}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <StackPanel Margin="5">
+                        <TextBlock FontWeight="Bold" Text="Sprint Start: " />
+                        <TextBlock Text="{Binding Sprint_Start}" />
+                    </StackPanel>
+                    <StackPanel Margin="5">
+                        <TextBlock FontWeight="Bold" Text="Sprint Deadline: " />
+                        <TextBlock Text="{Binding Sprint_End}" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+        </DataTemplate>
+
 
 
     </Page.Resources>
@@ -105,7 +132,16 @@
                 HorizontalAlignment="Center"
                 FontWeight="Bold"
                 Text="Backlog :" />
-            <GridView ItemTemplate="{StaticResource StoriesTemp}" ItemsSource="{Binding Backlog, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <GridView
+                x:Name="Backlog"
+                AllowDrop="True"
+                CanDragItems="True"
+                CanReorderItems="True"
+                DragItemsStarting="StartDrag"
+                DragOver="DragOverEvent"
+                Drop="OnDropList"
+                ItemTemplate="{StaticResource StoriesTemp}"
+                ItemsSource="{Binding Backlog, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <!--  Sprint backlog  -->
         <StackPanel Grid.Row="1" Grid.Column="2">
@@ -113,7 +149,16 @@
                 HorizontalAlignment="Center"
                 FontWeight="Bold"
                 Text="Sprint Backlog :" />
-            <GridView ItemTemplate="{StaticResource StoriesTemp}" ItemsSource="{Binding SprintBacklog, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <GridView
+                x:Name="SprintBacklog"
+                AllowDrop="True"
+                CanDragItems="True"
+                CanReorderItems="True"
+                DragItemsStarting="StartDrag"
+                DragOver="DragOverEvent"
+                Drop="OnDropList"
+                ItemTemplate="{StaticResource StoriesTemp}"
+                ItemsSource="{Binding SprintBacklog, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <!--  Sprint opsætning  -->
 
@@ -149,7 +194,7 @@
                 HorizontalAlignment="Center"
                 FontWeight="Bold"
                 Text="Sprints :" />
-            <ListView />
+            <ListView ItemTemplate="{StaticResource SprintTemp}" ItemsSource="{Binding Sprints, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
     </Grid>
 </Page>
