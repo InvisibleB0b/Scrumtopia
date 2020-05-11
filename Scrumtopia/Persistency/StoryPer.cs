@@ -50,6 +50,43 @@ namespace Scrumtopia.Persistency
             }
         }
 
+        public static async Task<List<Story>> LoadSprintBacklog(int sprint_Id)
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+
+            handler.UseDefaultCredentials = true;
+
+            using (var client = new HttpClient(handler))
+            {
+
+                client.BaseAddress = new Uri(Serverurl);
+
+                client.DefaultRequestHeaders.Clear();
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("aplication/json"));
+
+                try
+                {
+                    var response = await client.GetAsync($"api/Stories?Sprint_Id={sprint_Id}");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return response.Content.ReadAsAsync<List<Story>>().Result;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+
+            }
+        }
+
         public static async Task<List<Story>> LoadBacklog(int project_Id)
         {
 
