@@ -79,10 +79,7 @@ LEFT JOIN Categories ON Categories.Category_Id = Stories.Category_Id WHERE Proje
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                string queryString = $@"INSERT INTO Stories 
-VALUES({value.Project_Id}, {value.Sprint_Id}, {value.Category.Category_Id}, '{value.Story_Name}', '{value.Story_description}', {value.Story_Points}, {value.Story_Priority}, {value.Story_Referee.User_Id}, {value.Story_Asignee.User_Id}) 
-SELECT *, (SELECT User_Name FROM Users WHERE User_Id = Story_Referee) AS Referee_Name, (SELECT User_Name FROM Users WHERE User_Id = Story_Asignee) AS Asignee_Name  FROM Stories 
-LEFT JOIN Categories ON Categories.Category_Id = Stories.Category_Id WHERE Story_Id = @@IDENTITY";
+                string queryString = $@"INSERT INTO Stories VALUES({value.Project_Id}, {value.Sprint_Id}, {value.Category.Category_Id}, '{value.Story_Name}', '{value.Story_description}', {value.Story_Points}, {value.Story_Priority}, {value.Story_Referee.User_Id}, 'ToDo', {value.Story_Asignee.User_Id}) SELECT *, (SELECT User_Name FROM Users WHERE User_Id = Story_Referee) AS Referee_Name, (SELECT User_Name FROM Users WHERE User_Id = Story_Asignee) AS Asignee_Name  FROM Stories LEFT JOIN Categories ON Categories.Category_Id = Stories.Category_Id WHERE Story_Id = @@IDENTITY";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
 
