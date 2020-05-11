@@ -146,7 +146,28 @@ namespace restService_Scrumtopia.Controllers
         // PUT api/Stories/5
         public void Put(int id, [FromBody]string value)
         {
+
         }
+
+        public bool Put_ChangeState(int storyId, [FromBody]Story value)
+        {
+            bool ch = false;
+
+             using (SqlConnection connection = new SqlConnection(ConnectionString))
+             {
+                 string queryString = $" UPDATE Stories SET Story_State = '{value.Story_State}' WHERE Story_Id = {storyId}";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                ch = command.ExecuteNonQuery() > 0;
+               
+
+                command.Connection.Close();
+             }
+
+            return ch;
+        }
+        
 
         // DELETE api/Stories/5
         public void Delete(int id)

@@ -18,7 +18,7 @@ namespace Scrumtopia.ViewModel
         public ObservableCollection<Story> DoneCollection { get; set; }
         public ObservableCollection<Story> DoneDoneCollection { get; set; }
         public Singleton LeSingleton { get; set; }
-
+        public Story DragStory { get; set; }
 
         public SprintBacklogVM()
         {
@@ -54,7 +54,57 @@ namespace Scrumtopia.ViewModel
                             DoneDoneCollection.Add(storey);
                             break;
                     }
+
                 }
+            }
+        }
+
+        public async void ChangeState(string name)
+        {
+            string removeState = DragStory.Story_State;
+            DragStory.Story_State = name;
+            bool success = await StoryPer.ChangeState(DragStory.Sprint_Id, DragStory);
+           
+            if (success)
+            {
+                switch (DragStory.Story_State)
+                {
+                    case "ToDo": 
+                        TodoCollection.Add(DragStory);
+                        break;
+                    case "Doing":
+                        DoingCollection.Add(DragStory);
+                        break;
+                    case "Done":
+                        DoneCollection.Add(DragStory);
+                        break;
+                    case "DoneDone":
+                        DoneDoneCollection.Add(DragStory);
+                        break;
+                }
+
+                switch (removeState)
+                {
+                    case "ToDo": 
+                        TodoCollection.Remove(DragStory);
+                        break;
+                    case "Doing":
+                        DoingCollection.Remove(DragStory);
+                        break;
+                    case "Done":
+                        DoneCollection.Remove(DragStory);
+                        break;
+                    case "DoneDone":
+                        DoneDoneCollection.Remove(DragStory);
+                        break;
+                    
+                }
+            }
+            else
+            {
+
+                DragStory.Story_State = removeState;
+
             }
         }
     }
