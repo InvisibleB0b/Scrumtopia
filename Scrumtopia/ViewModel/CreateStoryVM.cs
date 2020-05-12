@@ -124,9 +124,15 @@ namespace Scrumtopia.ViewModel
             LeSingleton = Singleton.Instance;
             AssigneeVM = new ScrumUser(){User_Id = 0};
             UsersInProject = new List<ScrumUser>();
+            Load();
+        }
+
+        public void Load()
+        { 
+            LoadUsers();
             LoadStories();
             LoadCategories();
-            LoadUsers();
+           
         }
 
         public async void CreatCategory()
