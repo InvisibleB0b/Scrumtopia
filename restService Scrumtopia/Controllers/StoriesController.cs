@@ -144,9 +144,23 @@ namespace restService_Scrumtopia.Controllers
         }
 
         // PUT api/Stories/5
-        public void Put(int id, [FromBody]string value)
+        public bool Put(int id, [FromBody]Story value)
         {
+            int rowAffected = 0;
 
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string queryString = $" UPDATE Stories SET Project_Id = {value.Project_Id}, Sprint_id = {value.Sprint_Id}, Category_Id = {value.Category.Category_Id}, Story_Name = '{value.Story_Name}', Story_Description = '{value.Story_description}', Story_Points = {value.Story_Points}, Story_Priority = {value.Story_Priority}, Story_Referee = {value.Story_Referee.User_Id}, 'ToDo', Story_Asignee = {value.Story_Asignee.User_Id} WHERE Story_Id = {id}";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                rowAffected = command.ExecuteNonQuery();
+               
+
+                command.Connection.Close();
+            }
+
+            return rowAffected == 1;
         }
 
         public bool Put_ChangeState(int storyId, [FromBody]Story value)

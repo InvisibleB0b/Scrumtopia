@@ -118,14 +118,24 @@
             <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Opret" />
         </StackPanel>
 
-        <!--
-            Dette er til at oprette og rette kategorier
-        -->
+        
         <GridView
             Grid.Row="1"
             Grid.Column="1"
             ItemTemplate="{StaticResource StoriesTemp}"
             ItemsSource="{Binding Stories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
+
+        <!--
+            Dette er til at oprette og rette kategorier
+        -->
+        <StackPanel Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center">
+            <StackPanel>
+                <TextBlock Text="Category"/>
+                <TextBox/>
+            </StackPanel>
+
+        </StackPanel>
 
     </Grid>
 </Page>
