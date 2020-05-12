@@ -63,7 +63,7 @@ namespace Scrumtopia.ViewModel
         {
             string removeState = DragStory.Story_State;
             DragStory.Story_State = name;
-            bool success = await StoryPer.ChangeState(DragStory.Sprint_Id, DragStory);
+            bool success = await StoryPer.ChangeState(DragStory.Story_Id, DragStory);
            
             if (success)
             {
