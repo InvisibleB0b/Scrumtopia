@@ -68,6 +68,7 @@ namespace Scrumtopia.Persistency
                 try
                 {
                     var response = await client.PostAsJsonAsync("api/Categories", c);
+
                     if (response.IsSuccessStatusCode)
                     {
                         return response.Content.ReadAsAsync<Category>().Result;

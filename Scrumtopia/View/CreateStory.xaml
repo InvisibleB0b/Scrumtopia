@@ -14,6 +14,14 @@
 
     <Page.Resources>
 
+        <DataTemplate x:Key="CateTemp">
+            <StackPanel 
+                Padding="5"
+                Background="{Binding Category_Color}">
+             <TextBlock Text="{Binding Category_Name}"/>
+            </StackPanel>
+        </DataTemplate>
+
         <DataTemplate x:Key="StoriesTemp">
             <StackPanel
                 Margin="10,5"
@@ -59,6 +67,7 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
             <RowDefinition Height="10*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
@@ -83,7 +92,9 @@
         <!--
             Dette er til at oprette og rette user stories
         -->
-        <StackPanel Grid.Row="1" Grid.Column="2">
+        
+        <TextBlock Grid.Column="1" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Right" Text="Stories" FontWeight="Bold" FontSize="25"/>
+        <StackPanel Grid.Row="2" Grid.Column="2">
             <StackPanel>
                 <TextBlock Text="Story name" />
                 <TextBox Text="{Binding Story_NameVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -105,7 +116,8 @@
                 <GridView
                     ItemsSource="{Binding CategoriesForStory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectedItem="{Binding Story_CategoryVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    SelectionMode="Single" />
+                    SelectionMode="Single" 
+                    ItemTemplate="{StaticResource CateTemp}"/>
             </StackPanel>
             <StackPanel>
                 <TextBlock Text="Assignee" />
@@ -120,7 +132,7 @@
 
         
         <GridView
-            Grid.Row="1"
+            Grid.Row="2"
             Grid.Column="1"
             ItemTemplate="{StaticResource StoriesTemp}"
             ItemsSource="{Binding Stories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
@@ -129,11 +141,24 @@
         <!--
             Dette er til at oprette og rette kategorier
         -->
-        <StackPanel Grid.Row="1" Grid.Column="3" HorizontalAlignment="Center">
+        <TextBlock Grid.Column="3" Grid.Row="1" Grid.RowSpan="2" HorizontalAlignment="Right" Text="Categories"  FontWeight="Bold" FontSize="25"/>
+
+        <ListView Grid.Row="2" Grid.Column="3" HorizontalAlignment="Right"
+                  ItemsSource="{Binding CategoriesForStory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                  ItemTemplate="{StaticResource CateTemp}"/>
+
+        <StackPanel Grid.Row="2" Grid.Column="4" HorizontalAlignment="Center">
             <StackPanel>
-                <TextBlock Text="Category"/>
-                <TextBox/>
+                <TextBlock Text="Category Name" />
+                <TextBox Text="{Binding Category_NameVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
+            <StackPanel>
+                <TextBlock Text="Category Color"/>
+                <ColorPicker ColorChanged="ColorChange"/>
+            </StackPanel>
+
+            <Button Content="Opret"
+                    Command="{Binding CreateCatCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
         </StackPanel>
 

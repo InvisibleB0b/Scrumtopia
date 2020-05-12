@@ -28,54 +28,78 @@ namespace Scrumtopia.ViewModel
         private int _storyPriority;
         private ScrumUser _storyAsignee;
         private List<StoryTask> _tasks;
+       
 
         public Category Story_CategoryVM
         {
-            get => _storyCategory;
+            get { return _storyCategory; }
             set { _storyCategory = value; OnPropertyChanged(); }
         }
+
         public ScrumUser AssigneeVM
         {
-            get => _scrumUser;
+            get { return _scrumUser; }
             set { _scrumUser = value; OnPropertyChanged(); }
         }
 
         public string Story_NameVM
         {
-            get => _storyName;
+            get { return _storyName; }
             set { _storyName = value; OnPropertyChanged(); }
         }
 
         public string Story_descriptionVM
         {
-            get => _storyDescription;
+            get { return _storyDescription; }
             set { _storyDescription = value; OnPropertyChanged(); }
         }
 
         public int Story_PointsVM
         {
-            get => _storyPoints;
+            get { return _storyPoints; }
             set { _storyPoints = value; OnPropertyChanged(); }
         }
 
         public int Story_PriorityVM
         {
-            get => _storyPriority;
+            get { return _storyPriority; }
             set { _storyPriority = value; OnPropertyChanged(); }
         }
 
         public ScrumUser Story_AsigneeVM
         {
-            get => _storyAsignee;
+            get { return _storyAsignee; }
             set { _storyAsignee = value; OnPropertyChanged(); }
         }
 
         public List<StoryTask> TasksVM
         {
-            get => _tasks;
+            get { return _tasks; }
             set { _tasks = value; OnPropertyChanged(); }
-        } 
+        }
+
         #endregion
+
+        #region Create Category Properties
+
+        private string _categoryNameVm;
+        private string _categoryColorVm;
+
+        public string Category_NameVM
+        {
+            get { return _categoryNameVm; }
+            set { _categoryNameVm = value; OnPropertyChanged(); }
+        }
+
+        public string Category_ColorVM
+        {
+            get { return _categoryColorVm; }
+            set { _categoryColorVm = value; OnPropertyChanged();}
+        }
+
+        #endregion
+
+        public ICommand CreateCatCommand { get; set; }
 
         public ObservableCollection<Story> Stories { get; set; }
 
@@ -89,10 +113,13 @@ namespace Scrumtopia.ViewModel
 
 
 
+
+
         public CreateStoryVM()
         {
             Stories = new ObservableCollection<Story>();
             CreateCommand = new RelayCommand(CreateStory);
+            CreateCatCommand = new RelayCommand(CreatCategory);
             CategoriesForStory = new ObservableCollection<Category>();
             LeSingleton = Singleton.Instance;
             AssigneeVM = new ScrumUser(){User_Id = 0};
@@ -100,6 +127,18 @@ namespace Scrumtopia.ViewModel
             LoadStories();
             LoadCategories();
             LoadUsers();
+        }
+
+        public async void CreatCategory()
+        {
+            Category c = new Category() {Category_Name = Category_NameVM, Category_Color = Category_ColorVM};
+
+            Category categoryToAdd = await CategoryPer.Create(c);
+
+            if (categoryToAdd != null)
+            {
+                CategoriesForStory.Add(categoryToAdd);
+            }
         }
 
         public async void LoadStories()

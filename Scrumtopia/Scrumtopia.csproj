@@ -130,7 +130,6 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\BacklogVM.cs" />
-    <Compile Include="ViewModel\CreateCategoryVM.cs" />
     <Compile Include="ViewModel\CreateSprintVM.cs" />
     <Compile Include="ViewModel\CreateStoryVM.cs" />
     <Compile Include="ViewModel\ProjectsVM.cs" />

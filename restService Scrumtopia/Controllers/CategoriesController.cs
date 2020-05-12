@@ -53,22 +53,29 @@ namespace restService_Scrumtopia.Controllers
         }
 
         // POST api/categorys
-        public bool Post([FromBody]Category value)
+        public Category Post([FromBody]Category value)
         {
-            int rowAffected = 0;
+            Category c = new Category();
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                string queryString = $"insert into Categories VALUES('{value.Category_Color}', '{value.Category_Name}')";
+                string queryString = $"INSERT INTO Categories VALUES('{value.Category_Name}', '{value.Category_Color}') SELECT * FROM Categories WHERE Category_Id = @@IDENTITY";
                 SqlCommand command = new SqlCommand(queryString, connection);
-
                 command.Connection.Open();
 
-                rowAffected = command.ExecuteNonQuery();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    c.Category_Name = (string) reader["Category_Name"];
+                    c.Category_Color = (string) reader["Category_Color"];
+                    c.Category_Id = (int) reader["Category_Id"];
+                }
+
                 command.Connection.Close();
+                
             }
 
-            return rowAffected == 1;
+            return c;
         }
 
         // PUT api/Categories/5
