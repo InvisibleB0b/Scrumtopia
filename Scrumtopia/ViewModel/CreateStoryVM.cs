@@ -109,7 +109,7 @@ namespace Scrumtopia.ViewModel
 
         public Singleton LeSingleton { get; set; }
 
-        public List<ScrumUser> UsersInProject { get; set; }
+        public ObservableCollection<ScrumUser> UsersInProject { get; set; }
 
 
 
@@ -123,7 +123,7 @@ namespace Scrumtopia.ViewModel
             CategoriesForStory = new ObservableCollection<Category>();
             LeSingleton = Singleton.Instance;
             AssigneeVM = new ScrumUser(){User_Id = 0};
-            UsersInProject = new List<ScrumUser>();
+            UsersInProject = new ObservableCollection<ScrumUser>();
             Load();
         }
 
