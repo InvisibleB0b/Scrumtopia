@@ -60,5 +60,12 @@ namespace Scrumtopia.View
 
             vm.MoveStory(name);
         }
+
+        private void StartEdit(object sender, ItemClickEventArgs e)
+        {
+            CreateSprintVM vm = (CreateSprintVM) this.DataContext;
+            vm.SelectedSprint = (Sprint) e.ClickedItem;
+            vm.StartEdit();
+        }
     }
 }

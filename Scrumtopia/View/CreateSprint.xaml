@@ -183,7 +183,7 @@
                 <TimePicker Time="{Binding Sprint_EndTime}" />
             </StackPanel>
 
-            <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Opret" />
+            <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding SprintButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         </StackPanel>
 
@@ -194,7 +194,12 @@
                 HorizontalAlignment="Center"
                 FontWeight="Bold"
                 Text="Sprints :" />
-            <ListView ItemTemplate="{StaticResource SprintTemp}" ItemsSource="{Binding Sprints, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <ListView
+                IsItemClickEnabled="True"
+                ItemTemplate="{StaticResource SprintTemp}"
+                ItemsSource="{Binding Sprints, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                SelectionMode="Single" 
+                ItemClick="StartEdit"/>
         </StackPanel>
     </Grid>
 </Page>

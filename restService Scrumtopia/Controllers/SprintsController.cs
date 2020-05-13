@@ -88,8 +88,32 @@ namespace restService_Scrumtopia.Controllers
         }
 
         // PUT api/Stories/5
-        public void Put(int id, [FromBody]string value)
+        public bool Put(int id, [FromBody]Sprint value)
         {
+            bool succuess = false;
+
+            string startDateInsert = value.Sprint_Start.ToString("yyyy - MM - dd HH: mm:ss");
+            string endDateInsert = value.Sprint_End.ToString("yyyy - MM - dd HH: mm:ss");
+            string idList = "0";
+
+            foreach (int i in value.Story_Ids)
+            {
+                idList += "," + i.ToString() + " ";
+            }
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string queryString = $@"UPDATE Stories SET Sprint_Id = 0 WHERE Sprint_Id = {value.Sprint_Id} UPDATE Sprints SET Sprint_Goal = '{value.Sprint_Goal}', Sprint_Start = '{startDateInsert}', Sprint_End = '{endDateInsert}' WHERE Sprint_Id = {value.Sprint_Id} UPDATE Stories SET Sprint_Id = {value.Sprint_Id} WHERE Story_Id IN ({idList})";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                succuess = command.ExecuteNonQuery() > 0;
+                
+
+                command.Connection.Close();
+            }
+
+            return succuess;
+
         }
 
         // DELETE api/Stories/5

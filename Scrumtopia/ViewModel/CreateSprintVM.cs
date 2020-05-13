@@ -23,6 +23,13 @@ namespace Scrumtopia.ViewModel
         public Singleton LeSingleton { get; set; }
         public ObservableCollection<Sprint> Sprints { get; set; }
         public Story DragStory { get; set; }
+        public Sprint SelectedSprint { get; set; }
+
+        public string SprintButton
+        {
+            get { return _sprintButton; }
+            set { _sprintButton = value; OnPropertyChanged(); }
+        }
 
         public ICommand CreateCommand
         {
@@ -31,19 +38,13 @@ namespace Scrumtopia.ViewModel
         }
 
         #region Create props
-        private int _sprintIdVm;
         private DateTimeOffset _sprintStartDate;
         private TimeSpan _sprintStartTime;
         private DateTimeOffset _sprintEndDate;
         private TimeSpan _sprintEndTime;
         private string _sprintGoalVm;
         private ICommand _createCommand;
-
-        public int Sprint_IdVM
-        {
-            get { return _sprintIdVm; }
-            set { _sprintIdVm = value; OnPropertyChanged();}
-        }
+        private string _sprintButton;
 
         public DateTimeOffset Sprint_StartDate
         {
@@ -84,7 +85,20 @@ namespace Scrumtopia.ViewModel
             LeSingleton = Singleton.Instance;
             CreateCommand = new RelayCommand(Create);
             Sprints = new ObservableCollection<Sprint>();
+            LoadSprints();
             Load();
+        }
+
+        public async void LoadSprints()
+        {
+            List<Sprint> sp = await SprintsPer.LoadBacklog(LeSingleton.SelectedProject.Project_Id);
+            if (sp !=null)
+            {
+                foreach (Sprint sprint in sp)
+                {
+                    Sprints.Add(sprint);
+                } 
+            }
         }
 
         public async void Create()
@@ -102,10 +116,15 @@ namespace Scrumtopia.ViewModel
             {
                 Sprints.Add(sp);
             }
+
+            SprintReset();
         }
 
         public  async void Load()
         {
+            SprintButton = "Opret";
+            Sprint_StartDate = DateTimeOffset.Now;
+            Sprint_EndDate = DateTimeOffset.Now.AddDays(14);
 
             List<Story> st = await StoryPer.LoadBacklog(LeSingleton.SelectedProject.Project_Id);
 
@@ -139,6 +158,76 @@ namespace Scrumtopia.ViewModel
 
 
         }
+
+        public async void StartEdit()
+        {
+            SprintButton = "Ret";
+            CreateCommand = new RelayCommand(EditSprint);
+            Sprint_StartDate = TimeConverter.ConvertToDate(SelectedSprint.Sprint_Start);
+            Sprint_StartTime = TimeConverter.ConvertToTime(SelectedSprint.Sprint_Start);
+            Sprint_EndDate = TimeConverter.ConvertToDate(SelectedSprint.Sprint_End);
+            Sprint_EndTime = TimeConverter.ConvertToTime(SelectedSprint.Sprint_End);
+            Sprint_GoalVM = SelectedSprint.Sprint_Goal;
+            SelectedSprint.Story_Ids = new List<int>();
+
+            List<Story> storiesInSprintBacklog = await StoryPer.LoadSprintBacklog(SelectedSprint.Sprint_Id);
+
+            if (storiesInSprintBacklog != null)
+            {
+                foreach (Story story in storiesInSprintBacklog)
+                {
+                    foreach (Story storey in Backlog)
+                    {
+                        if (storey.Story_Id == story.Story_Id)
+                        {
+                            DragStory = storey;
+                        }
+                    }
+
+                    if (DragStory !=null)
+                    {
+                        MoveStory("SprintBacklog");
+                    }
+
+                    DragStory = null;
+
+                }
+            }
+
+        }
+
+        public async void EditSprint()
+        {
+            
+            Sprint sprint = new Sprint(){Sprint_End = TimeConverter.ConverterToDateTime(Sprint_EndDate,Sprint_EndTime), Sprint_Start = TimeConverter.ConverterToDateTime(Sprint_StartDate, Sprint_StartTime), Story_Ids = new List<int>(), Sprint_Goal = Sprint_GoalVM};
+            foreach (Story story in SprintBacklog)
+            {
+                sprint.Story_Ids.Add(story.Story_Id);
+            }
+
+            bool success = await SprintsPer.EditSprint(sprint, SelectedSprint.Sprint_Id);
+
+            if (success)
+            {
+                SelectedSprint.Sprint_Start = TimeConverter.ConverterToDateTime(Sprint_StartDate, Sprint_StartTime);
+                SelectedSprint.Sprint_End = TimeConverter.ConverterToDateTime(Sprint_EndDate, Sprint_EndTime);
+                SelectedSprint.Sprint_Goal = Sprint_GoalVM;
+                
+            }
+
+            SprintReset();
+        }
+
+
+
+        public void SprintReset()
+        {
+            SprintBacklog.Clear();
+            Backlog.Clear();
+            Sprint_GoalVM = "";
+            Load();
+        }
+
 
 
         #region PropChange

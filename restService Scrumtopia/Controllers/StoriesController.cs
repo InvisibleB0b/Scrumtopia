@@ -20,7 +20,7 @@ namespace restService_Scrumtopia.Controllers
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                string queryString = $@"SELECT *, (SELECT User_Name FROM Users WHERE User_Id = Story_Referee) AS Referee_Name, (SELECT User_Name FROM Users WHERE User_Id = Story_Asignee) AS Asignee_Name  FROM Stories LEFT JOIN Categories ON Categories.Category_Id = Stories.Category_Id WHERE Sprint_Id = {Sprint_Id}";
+                string queryString = $@"SELECT *, (SELECT User_Name FROM Users WHERE User_Id = Story_Referee) AS Referee_Name, (SELECT User_Name FROM Users WHERE User_Id = Story_Asignee) AS Asignee_Name  FROM Stories LEFT JOIN Categories ON Categories.Category_Id = Stories.Category_Id WHERE Sprint_Id = {Sprint_Id} ORDER BY Story_Priority DESC";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
 
@@ -63,7 +63,7 @@ namespace restService_Scrumtopia.Controllers
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                string queryString = $@"SELECT *, (SELECT User_Name FROM Users WHERE User_Id = Story_Referee) AS Referee_Name, (SELECT User_Name FROM Users WHERE User_Id = Story_Asignee) AS Asignee_Name  FROM Stories LEFT JOIN Categories ON Categories.Category_Id = Stories.Category_Id WHERE Project_Id = {Project_id}";
+                string queryString = $@"SELECT *, (SELECT User_Name FROM Users WHERE User_Id = Story_Referee) AS Referee_Name, (SELECT User_Name FROM Users WHERE User_Id = Story_Asignee) AS Asignee_Name  FROM Stories LEFT JOIN Categories ON Categories.Category_Id = Stories.Category_Id WHERE Project_Id = {Project_id} ORDER BY Story_Priority DESC";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
 
