@@ -84,8 +84,23 @@ namespace restService_Scrumtopia.Controllers
         }
 
         // DELETE api/Categories/5
-        public void Delete(int id)
+        public bool Delete(int id)
         {
+            bool success = false;
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string queryString = $"DELETE FROM Categories WHERE Category_Id = {id}";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                success = command.ExecuteNonQuery() > 0;
+
+                command.Connection.Close();
+
+            }
+
+            return success;
+
         }
     }
 }

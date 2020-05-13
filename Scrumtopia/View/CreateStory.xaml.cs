@@ -46,5 +46,12 @@ namespace Scrumtopia.View
             vm.SelectedStory = (Story) e.ClickedItem;
             vm.StartStoryEdit();
         }
+
+        private void StartEditCategory(object sender, ItemClickEventArgs e)
+        {
+            CreateStoryVM vm = (CreateStoryVM) this.DataContext;
+            vm.SelectedCategory = (Category) e.ClickedItem;
+            vm.StartEditCat();
+        }
     }
 }

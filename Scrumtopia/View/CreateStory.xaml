@@ -138,20 +138,19 @@
                     SelectionMode="Single" />
             </StackPanel>
 
-            <Button Command="{Binding CreateStoryCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                    Content="{Binding StoryButton, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+            <Button Command="{Binding CreateStoryCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding StoryButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
 
         <GridView
             Grid.Row="2"
             Grid.Column="1"
+            IsItemClickEnabled="True"
+            ItemClick="StartEdit"
             ItemTemplate="{StaticResource StoriesTemp}"
             ItemsSource="{Binding Stories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             SelectedItem="{Binding SelectedStory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-            IsItemClickEnabled="True"
-            SelectionMode="Single"
-            ItemClick="StartEdit"/>
+            SelectionMode="Single" />
 
 
         <!--
@@ -170,6 +169,8 @@
             Grid.Row="2"
             Grid.Column="3"
             HorizontalAlignment="Right"
+            IsItemClickEnabled="True"
+            ItemClick="StartEditCategory"
             ItemTemplate="{StaticResource CateTemp}"
             ItemsSource="{Binding CategoriesForStory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -185,8 +186,17 @@
                 <TextBlock Text="Category Color" />
                 <ColorPicker ColorChanged="ColorChange" />
             </StackPanel>
-
-            <Button Command="{Binding CreateCatCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Opret" />
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding CreateCatCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Opret" />
+                <Button
+                    Command="{Binding SletCatCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Content="Slet"
+                    Visibility="{Binding SletButtonState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button
+                    Command="{Binding AnnullerCatCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Content="Anuller"
+                    Visibility="{Binding SletButtonState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
 
         </StackPanel>
 

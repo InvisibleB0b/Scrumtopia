@@ -98,11 +98,11 @@ namespace restService_Scrumtopia.Controllers
 
             foreach (int i in value.Story_Ids)
             {
-                idList += "," + i.ToString() + " ";
+                idList += ", " + i.ToString() + " ";
             }
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                string queryString = $@"UPDATE Stories SET Sprint_Id = 0 WHERE Sprint_Id = {value.Sprint_Id} UPDATE Sprints SET Sprint_Goal = '{value.Sprint_Goal}', Sprint_Start = '{startDateInsert}', Sprint_End = '{endDateInsert}' WHERE Sprint_Id = {value.Sprint_Id} UPDATE Stories SET Sprint_Id = {value.Sprint_Id} WHERE Story_Id IN ({idList})";
+                string queryString = $@"UPDATE Stories SET Sprint_Id = 0 WHERE Sprint_Id = {id} UPDATE Sprints SET Sprint_Goal = '{value.Sprint_Goal}', Sprint_Start = '{startDateInsert}', Sprint_End = '{endDateInsert}' WHERE Sprint_Id = {id} UPDATE Stories SET Sprint_Id = {id} WHERE Story_Id IN ({idList})";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
 

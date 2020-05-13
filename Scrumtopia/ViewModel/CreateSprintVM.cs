@@ -161,6 +161,8 @@ namespace Scrumtopia.ViewModel
 
         public async void StartEdit()
         {
+            SprintReset();
+
             SprintButton = "Ret";
             CreateCommand = new RelayCommand(EditSprint);
             Sprint_StartDate = TimeConverter.ConvertToDate(SelectedSprint.Sprint_Start);

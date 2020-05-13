@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -62,6 +63,8 @@ namespace Scrumtopia.ViewModel
             set { _storyPoints = value; OnPropertyChanged(); }
         }
 
+      
+
         public int Story_PriorityVM
         {
             get { return _storyPriority; }
@@ -85,6 +88,7 @@ namespace Scrumtopia.ViewModel
         private Story _selectedStory;
         private ICommand _createStoryCommand;
         private ICommand _createCatCommand;
+        private string _sletButtonState;
 
         public string Category_NameVM
         {
@@ -114,7 +118,7 @@ namespace Scrumtopia.ViewModel
 
         public ICommand CreateCatCommand
         {
-            get => _createCatCommand;
+            get { return _createCatCommand; }
             set { _createCatCommand = value; OnPropertyChanged();}
         }
 
@@ -132,8 +136,18 @@ namespace Scrumtopia.ViewModel
 
         public ObservableCollection<ScrumUser> UsersInProject { get; set; }
 
+        public string SletButtonState
+        {
+            get { return _sletButtonState; }
+            set { _sletButtonState = value; OnPropertyChanged();}
+        }
+
+        public Category SelectedCategory { get; set; }
 
 
+        public ICommand SletCatCommand { get; set; }
+
+        public ICommand AnnullerCatCommand { get; set; }
 
 
         public CreateStoryVM()
@@ -146,6 +160,9 @@ namespace Scrumtopia.ViewModel
             AssigneeVM = new ScrumUser(){User_Id = 0};
             UsersInProject = new ObservableCollection<ScrumUser>();
             StoryButton = "Opret";
+            SletButtonState = "Collapsed";
+            SletCatCommand = new RelayCommand(DeleteCategory);
+            AnnullerCatCommand = new RelayCommand(ResetCategory);
             Load();
         }
 
@@ -156,6 +173,45 @@ namespace Scrumtopia.ViewModel
             LoadCategories();
            
         }
+
+
+        public async void DeleteCategory()
+        {
+            bool success = await CategoryPer.Delete(SelectedCategory.Category_Id);
+
+            if (success)
+            {
+
+                Category c = null;
+                foreach (Category category in CategoriesForStory)
+                {
+                    if (category.Category_Id == SelectedCategory.Category_Id) c = category;
+                }
+
+                CategoriesForStory.Remove(c);
+            }
+
+            ResetCategory();
+
+        }
+
+
+        public void StartEditCat()
+        {
+            Category_NameVM = SelectedCategory.Category_Name;
+            Category_ColorVM = SelectedCategory.Category_Color;
+            SletButtonState = "Visible";
+        }
+
+        public void ResetCategory()
+        {
+            Category_NameVM = "";
+            SelectedCategory = null;
+            SletButtonState = "Collapsed";
+            Category_ColorVM = "#FFFFFFFF";
+        }
+
+     
 
         public async void CreatCategory()
         {
