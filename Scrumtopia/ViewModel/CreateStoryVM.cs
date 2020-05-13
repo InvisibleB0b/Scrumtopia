@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Resources;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Windows.Devices.PointOfService;
 using Windows.System;
+using Windows.UI.Composition;
 using Scrumtopia.Annotations;
 using Scrumtopia.Common;
 using Scrumtopia.Persistency;
@@ -27,7 +29,7 @@ namespace Scrumtopia.ViewModel
         private int _storyPoints;
         private int _storyPriority;
         private ScrumUser _storyAsignee;
-        private List<StoryTask> _tasks;
+        
        
 
         public Category Story_CategoryVM
@@ -72,11 +74,6 @@ namespace Scrumtopia.ViewModel
             set { _storyAsignee = value; OnPropertyChanged(); }
         }
 
-        public List<StoryTask> TasksVM
-        {
-            get { return _tasks; }
-            set { _tasks = value; OnPropertyChanged(); }
-        }
 
         #endregion
 
@@ -84,6 +81,10 @@ namespace Scrumtopia.ViewModel
 
         private string _categoryNameVm;
         private string _categoryColorVm;
+        private string _storyButton;
+        private Story _selectedStory;
+        private ICommand _createStoryCommand;
+        private ICommand _createCatCommand;
 
         public string Category_NameVM
         {
@@ -99,11 +100,31 @@ namespace Scrumtopia.ViewModel
 
         #endregion
 
-        public ICommand CreateCatCommand { get; set; }
+        public string StoryButton
+        {
+            get { return _storyButton; }
+            set { _storyButton = value; OnPropertyChanged(); }
+        }
+
+        public Story SelectedStory
+        {
+            get { return _selectedStory; }
+            set { _selectedStory = value; OnPropertyChanged();}
+        }
+
+        public ICommand CreateCatCommand
+        {
+            get => _createCatCommand;
+            set { _createCatCommand = value; OnPropertyChanged();}
+        }
 
         public ObservableCollection<Story> Stories { get; set; }
 
-        public ICommand CreateCommand { get; set; }
+        public ICommand CreateStoryCommand
+        {
+            get { return _createStoryCommand; }
+            set { _createStoryCommand = value; OnPropertyChanged(); }
+        }
 
         public ObservableCollection<Category> CategoriesForStory { get; set; }
 
@@ -118,12 +139,13 @@ namespace Scrumtopia.ViewModel
         public CreateStoryVM()
         {
             Stories = new ObservableCollection<Story>();
-            CreateCommand = new RelayCommand(CreateStory);
+            CreateStoryCommand = new RelayCommand(CreateStory);
             CreateCatCommand = new RelayCommand(CreatCategory);
             CategoriesForStory = new ObservableCollection<Category>();
             LeSingleton = Singleton.Instance;
             AssigneeVM = new ScrumUser(){User_Id = 0};
             UsersInProject = new ObservableCollection<ScrumUser>();
+            StoryButton = "Opret";
             Load();
         }
 
@@ -197,9 +219,74 @@ namespace Scrumtopia.ViewModel
             {
                 Stories.Add(storyToAdd);
             }
+            StoryReset();
         }
 
+        public void StartStoryEdit()
+        {
+            StoryButton = "Ret";
+            CreateStoryCommand = new RelayCommand(Edit);
 
+            Story_PointsVM = SelectedStory.Story_Points;
+            Story_descriptionVM = SelectedStory.Story_description;
+            Story_PriorityVM = SelectedStory.Story_Priority;
+            Story_NameVM = SelectedStory.Story_Name;
+
+            foreach (Category cat in CategoriesForStory)
+            {
+                if (cat.Category_Id == SelectedStory.Category.Category_Id)
+                {
+                    Story_CategoryVM = cat;
+                }
+            }
+
+            AssigneeVM = new ScrumUser(){User_Id = 0};
+
+            foreach (ScrumUser su in UsersInProject)
+            {
+                if (su.User_Id == SelectedStory.Story_Asignee.User_Id)
+                {
+                    AssigneeVM = su;
+                }
+            }
+            
+        }
+
+        public async void Edit()
+        {
+            Story s = new Story(){Category = Story_CategoryVM, Story_Name = Story_NameVM, Story_Asignee = AssigneeVM, Story_description = Story_descriptionVM, Story_Priority = Story_PriorityVM, Story_Points = Story_PointsVM};
+            bool success = await StoryPer.Edit(s, SelectedStory.Story_Id);
+
+            if (success)
+            {
+                SelectedStory.Story_Points = Story_PointsVM;
+                SelectedStory.Story_description = Story_descriptionVM;
+                SelectedStory.Story_Priority = Story_PriorityVM;
+                SelectedStory.Story_Name = Story_NameVM;
+                SelectedStory.Category = Story_CategoryVM;
+                SelectedStory.Story_Asignee = AssigneeVM;
+            }
+
+            StoryReset();
+
+        }
+
+        public void StoryReset()
+        {
+            StoryButton = "Opret";
+            CreateStoryCommand = new RelayCommand(CreateStory);
+
+            Story_PointsVM =0;
+            Story_descriptionVM = "";
+            Story_PriorityVM = 0;
+            Story_NameVM = "";
+            Story_CategoryVM = null;
+
+            AssigneeVM = new ScrumUser(){User_Id = 0};
+
+            SelectedStory = null;
+
+        }
 
 
         #region INotifyPropertyChanged
@@ -211,5 +298,7 @@ namespace Scrumtopia.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         } 
         #endregion
+
+        
     }
 }

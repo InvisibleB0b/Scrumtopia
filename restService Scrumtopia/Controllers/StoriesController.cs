@@ -150,12 +150,12 @@ namespace restService_Scrumtopia.Controllers
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                string queryString = $" UPDATE Stories SET Category_Id = {value.Category.Category_Id}, Story_Name = '{value.Story_Name}', Story_Description = '{value.Story_description}', Story_Points = {value.Story_Points}, Story_Priority = {value.Story_Priority}, Story_Referee = {value.Story_Referee.User_Id}, Story_State = '{value.Story_State}', Story_Asignee = {value.Story_Asignee.User_Id} WHERE Story_Id = {id}";
+                string queryString = $" UPDATE Stories SET Category_Id = {value.Category.Category_Id}, Story_Name = '{value.Story_Name}', Story_Description = '{value.Story_description}', Story_Points = {value.Story_Points}, Story_Priority = {value.Story_Priority}, Story_Asignee = {value.Story_Asignee.User_Id} WHERE Story_Id = {id}";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
 
                 rowAffected = command.ExecuteNonQuery();
-               
+                
 
                 command.Connection.Close();
             }

@@ -138,7 +138,8 @@
                     SelectionMode="Single" />
             </StackPanel>
 
-            <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Opret" />
+            <Button Command="{Binding CreateStoryCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                    Content="{Binding StoryButton, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
 
 
@@ -146,7 +147,11 @@
             Grid.Row="2"
             Grid.Column="1"
             ItemTemplate="{StaticResource StoriesTemp}"
-            ItemsSource="{Binding Stories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            ItemsSource="{Binding Stories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            SelectedItem="{Binding SelectedStory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            IsItemClickEnabled="True"
+            SelectionMode="Single"
+            ItemClick="StartEdit"/>
 
 
         <!--

@@ -39,5 +39,12 @@ namespace Scrumtopia.View
             CreateStoryVM vm = (CreateStoryVM) this.DataContext;
             vm.Category_ColorVM = sender.Color.ToString();
         }
+
+        private void StartEdit(object sender, ItemClickEventArgs e)
+        {
+            CreateStoryVM vm = (CreateStoryVM) this.DataContext;
+            vm.SelectedStory = (Story) e.ClickedItem;
+            vm.StartStoryEdit();
+        }
     }
 }
