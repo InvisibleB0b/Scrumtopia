@@ -51,5 +51,79 @@ namespace Scrumtopia.Persistency
 
             }
         }
+
+        public async static Task<ScrumUser> Login(ScrumUser user)
+        {
+            HttpClientHandler handler = new HttpClientHandler();
+
+            handler.UseDefaultCredentials = true;
+
+            using (var client = new HttpClient(handler))
+            {
+
+                client.BaseAddress = new Uri(Serverurl);
+
+                client.DefaultRequestHeaders.Clear();
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("aplication/json"));
+
+                try
+                {
+                    var response = await client.GetAsync($"api/ScrumUsers?userName={user.User_Name}&userPassword={user.User_Password}");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return response.Content.ReadAsAsync<ScrumUser>().Result;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+
+            }
+        }
+        public async static Task<List<ScrumUser>> GetAllUsers()
+        {
+
+            HttpClientHandler handler = new HttpClientHandler();
+
+            handler.UseDefaultCredentials = true;
+
+            using (var client = new HttpClient(handler))
+            {
+
+                client.BaseAddress = new Uri(Serverurl);
+
+                client.DefaultRequestHeaders.Clear();
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("aplication/json"));
+
+                try
+                {
+                    var response = await client.GetAsync($"api/ScrumUsers");
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return response.Content.ReadAsAsync<List<ScrumUser>>().Result;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+
+            }
+        }
     }
 }

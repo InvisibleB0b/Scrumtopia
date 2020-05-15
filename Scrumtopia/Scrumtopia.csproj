@@ -132,6 +132,7 @@
     <Compile Include="ViewModel\BacklogVM.cs" />
     <Compile Include="ViewModel\CreateSprintVM.cs" />
     <Compile Include="ViewModel\CreateStoryVM.cs" />
+    <Compile Include="ViewModel\LoginVM.cs" />
     <Compile Include="ViewModel\ProjectsVM.cs" />
     <Compile Include="ViewModel\SprintBacklogVM.cs" />
     <Compile Include="View\Backlog.xaml.cs">
@@ -142,6 +143,9 @@
     </Compile>
     <Compile Include="View\CreateStory.xaml.cs">
       <DependentUpon>CreateStory.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Projects.xaml.cs">
       <DependentUpon>Projects.xaml</DependentUpon>
@@ -179,6 +183,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\CreateStory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

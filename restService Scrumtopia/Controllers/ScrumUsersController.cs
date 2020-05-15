@@ -43,5 +43,62 @@ namespace restService_Scrumtopia.Controllers
 
             return scUsers;
         }
+
+        public ScrumUser Get(string userName, string userPassword)
+        {
+            ScrumUser scUser = new ScrumUser();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+
+
+                string queryString = $"SELECT User_Id, User_Name FROM Users WHERE User_Name = '{userName}' AND User_Password = '{userPassword}'";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    scUser.User_Name = (string) reader["User_Name"];
+                    scUser.User_Id = (int) reader["User_Id"];
+                }
+
+
+
+                command.Connection.Close();
+            }
+
+            return scUser;
+        }
+        public List<ScrumUser> Get()
+        {
+            List<ScrumUser> scUsers = new List<ScrumUser>();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+
+
+                string queryString = $"SELECT User_Id, User_Name FROM Users";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+
+                    ScrumUser sc = new ScrumUser()
+                    {
+                        User_Id = (int)reader["User_Id"],
+                        User_Name = (string)reader["User_Name"]
+                    };
+                    scUsers.Add(sc);
+
+                }
+
+
+
+                command.Connection.Close();
+            }
+
+            return scUsers;
+        }
     }
 }

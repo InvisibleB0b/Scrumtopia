@@ -42,8 +42,7 @@ namespace Scrumtopia.Common
 
         private Singleton()
         {
-         
-            LoggedUser = new ScrumUser(){User_Id = 1};
+            
         }
 
         #region Prop change

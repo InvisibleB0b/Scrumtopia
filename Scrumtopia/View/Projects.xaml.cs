@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Scrumtopia.ViewModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -30,6 +31,27 @@ namespace Scrumtopia.View
         private void Open_Project(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(Backlog));
+        }
+
+        private void Back(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(Login));
+        }
+
+        private void HandleCheck(object sender, RoutedEventArgs e)
+        {
+            ProjectsVM vm = (ProjectsVM)this.DataContext;
+            CheckBox box = sender as CheckBox;
+            string name = box.Content.ToString();
+            vm.HandleCheck(name);
+        }
+
+        private void HandleUncheck(object sender, RoutedEventArgs e)
+        {
+            ProjectsVM vm = (ProjectsVM)this.DataContext;
+            CheckBox box = sender as CheckBox;
+            string name = box.Content.ToString();
+            vm.HandleUncheck(name);
         }
     }
 }

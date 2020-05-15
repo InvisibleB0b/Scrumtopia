@@ -22,6 +22,7 @@ namespace Scrumtopia.ViewModel
         private string _projectDescription;
         private DateTimeOffset  _projectDeadlineDate;
         private TimeSpan _projectDeadlineTime;
+        private List<ScrumUser> _selectedUsers;
 
         public string Project_NameVM
         {
@@ -47,9 +48,19 @@ namespace Scrumtopia.ViewModel
             set { _projectDeadlineTime = value; OnPropertyChanged(); }
         }
 
+       
+
         #endregion
 
         public ObservableCollection<Project> Projects { get; set; }
+
+        public ObservableCollection<ScrumUser> Users { get; set; }
+
+        public List<ScrumUser> selectedUsers
+        {
+            get { return _selectedUsers; }
+            set { _selectedUsers = value; OnPropertyChanged();}
+        }
 
         public ICommand CreateCommand { get; set; }
 
@@ -59,11 +70,28 @@ namespace Scrumtopia.ViewModel
         public ProjectsVM()
         {
             Projects = new ObservableCollection<Project>();
+            Users = new ObservableCollection<ScrumUser>();
             CreateCommand = new RelayCommand(CreateProject);
             LeSingleton = Singleton.Instance;
             Project_DeadlineDate = TimeConverter.ConvertToDate(DateTime.Now.AddDays(14));
             Project_DeadlineTime = TimeConverter.ConvertToTime(DateTime.Now);
+            selectedUsers = new List<ScrumUser>();
             LoadProjects();
+            LoadUsers();
+        }
+
+        public async void LoadUsers()
+        {
+            List<ScrumUser> u = await UsersPer.GetAllUsers();
+
+            if (u!= null)
+            {
+                foreach (ScrumUser scrumUser in u)
+                {
+                    if (scrumUser.User_Id != LeSingleton.LoggedUser.User_Id) { Users.Add(scrumUser); }
+                    
+                } 
+            }
         }
 
         public async void LoadProjects()
@@ -81,8 +109,14 @@ namespace Scrumtopia.ViewModel
 
         public async void CreateProject()
         {
-           Project p = new Project(){Project_Name = Project_NameVM, Project_Description = Project_DescriptionVM, Project_Deadline = TimeConverter.ConverterToDateTime(Project_DeadlineDate, Project_DeadlineTime)};
+           Project p = new Project(){Project_Name = Project_NameVM, Project_Description = Project_DescriptionVM, Project_Deadline = TimeConverter.ConverterToDateTime(Project_DeadlineDate, Project_DeadlineTime), UserIds = new List<int>()};
 
+            p.UserIds.Add(LeSingleton.LoggedUser.User_Id);
+
+           foreach (ScrumUser selectedUser in selectedUsers)
+           {
+               p.UserIds.Add(selectedUser.User_Id);
+           }
 
            Project projectToAdd = await ProjectsPer.Create(p);
 
@@ -94,6 +128,34 @@ namespace Scrumtopia.ViewModel
 
         }
 
+        public void HandleCheck(string name)
+        {
+            foreach (ScrumUser scrumUser in Users)
+            {
+                if (scrumUser.User_Name == name)
+                {
+                    selectedUsers.Add(scrumUser);
+                }
+            }
+        }
+
+        public void HandleUncheck(string name)
+        {
+            ScrumUser u = null;
+
+            foreach (ScrumUser selectedUser in selectedUsers)
+            {
+                if (name == selectedUser.User_Name)
+                {
+                    u = selectedUser;
+                }
+            }
+
+            if (u != null)
+            {
+                selectedUsers.Remove(u);
+            }
+        }
 
 
 

@@ -62,7 +62,7 @@
 
         <DataTemplate x:Key="UsersTemp">
             <StackPanel>
-                <TextBlock Text="{Binding User_Name}" />
+                <TextBlock Text="{Binding User_Name}" TextWrapping="Wrap" />
             </StackPanel>
         </DataTemplate>
 

@@ -28,9 +28,10 @@ namespace restService_Scrumtopia.Controllers
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-
+               
 
                 string queryString = $"SELECT * FROM Projects WHERE Project_Id IN (SELECT Project_Id FROM Project_User_Relation WHERE User_Id =  {id})";
+
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
 
@@ -60,7 +61,6 @@ namespace restService_Scrumtopia.Controllers
 
             Project p = new Project();
 
-            
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
@@ -79,9 +79,30 @@ namespace restService_Scrumtopia.Controllers
                     p.Project_Deadline = (DateTime)reader["Project_Deadline"];
                 }
 
-
-
                 command.Connection.Close();
+
+                string valueString = "";
+
+                foreach (int valueUserId in value.UserIds)
+                {
+                    if (valueString == "")
+                    {
+                        valueString += $"({p.Project_Id}, {valueUserId})";
+                    }
+                    else
+                    {
+                        valueString += $", ({p.Project_Id}, {valueUserId})";
+                    }
+                    
+                }
+
+                string queryString2 = $"INSERT INTO Project_User_Relation VALUES{valueString}";
+                SqlCommand command2 = new SqlCommand(queryString2, connection);
+                command2.Connection.Open();
+
+                command2.ExecuteNonQuery();
+
+                command2.Connection.Close();
             }
             return p;
         }
