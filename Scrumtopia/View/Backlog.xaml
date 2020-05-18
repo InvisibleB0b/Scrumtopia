@@ -109,20 +109,22 @@
             Grid.Row="1"
             Grid.Column="1"
             BorderBrush="Black"
-            BorderThickness="5">
+            BorderThickness="3"
+            CornerRadius="15">
             <ListView
+                IsItemClickEnabled="True"
+                ItemClick="GoToSprintBacklog"
                 ItemTemplate="{StaticResource SprintTemp}"
                 ItemsSource="{Binding Sprints, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectionMode="Single"
-                IsItemClickEnabled="True"
-                ItemClick="GoToSprintBacklog"/>
+                SelectionMode="Single" />
         </Border>
 
         <Border
             Grid.Row="1"
             Grid.Column="2"
             BorderBrush="Black"
-            BorderThickness="5">
+            BorderThickness="3"
+            CornerRadius="15">
             <GridView
                 ItemTemplate="{StaticResource StoriesTemp}"
                 ItemsSource="{Binding Stories, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

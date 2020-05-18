@@ -127,7 +127,12 @@
             CornerRadius="10" />
 
         <!--  Backlog  -->
-        <StackPanel Grid.Row="1" Grid.Column="1">
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="1"
+            BorderBrush="Black"
+            BorderThickness="1"
+            CornerRadius="5">
             <TextBlock
                 HorizontalAlignment="Center"
                 FontWeight="Bold"
@@ -144,7 +149,12 @@
                 ItemsSource="{Binding Backlog, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <!--  Sprint backlog  -->
-        <StackPanel Grid.Row="1" Grid.Column="2">
+        <StackPanel
+            Grid.Row="1"
+            Grid.Column="2"
+            BorderBrush="Black"
+            BorderThickness="1"
+            CornerRadius="5">
             <TextBlock
                 HorizontalAlignment="Center"
                 FontWeight="Bold"
@@ -196,10 +206,10 @@
                 Text="Sprints :" />
             <ListView
                 IsItemClickEnabled="True"
+                ItemClick="StartEdit"
                 ItemTemplate="{StaticResource SprintTemp}"
                 ItemsSource="{Binding Sprints, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectionMode="Single" 
-                ItemClick="StartEdit"/>
+                SelectionMode="Single" />
         </StackPanel>
     </Grid>
 </Page>
