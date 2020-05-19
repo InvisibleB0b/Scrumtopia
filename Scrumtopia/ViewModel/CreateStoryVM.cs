@@ -169,21 +169,23 @@ namespace Scrumtopia.ViewModel
             Load();
         }
 
-        private async void RemoveStory()
+        public async void RemoveStory()
         {
-            bool success = await StoryPer.Delete(SelectedCategory.Category_Id);
+            bool success = await StoryPer.Delete(SelectedStory.Story_Id);
 
             if (success)
             {
 
-                Category c = null;
-                foreach (Category category in CategoriesForStory)
+                Story s = null;
+                foreach (Story story in Stories)
                 {
-                    if (category.Category_Id == SelectedCategory.Category_Id) c = category;
+                    if (story.Story_Id == SelectedStory.Story_Id) s = story;
                 }
 
-                CategoriesForStory.Remove(c);
+                Stories.Remove(s);
             }
+            
+            StoryReset();
         }
 
         public void Load()

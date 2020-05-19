@@ -139,6 +139,7 @@
             </StackPanel>
 
             <Button Command="{Binding CreateStoryCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding StoryButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <Button Command="{Binding RemoveStoryCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Slet" />
         </StackPanel>
 
 

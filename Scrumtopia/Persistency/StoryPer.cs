@@ -201,9 +201,41 @@ namespace Scrumtopia.Persistency
             }
         }
 
-        public static async Task<bool> Delete(int selectedCategoryCategoryId)
+        public static async Task<bool> Delete(int Story_Id)
         {
-            return null;
+            HttpClientHandler handler = new HttpClientHandler();
+
+            handler.UseDefaultCredentials = true;
+
+            using (var client = new HttpClient(handler))
+            {
+
+                client.BaseAddress = new Uri(Serverurl);
+
+                client.DefaultRequestHeaders.Clear();
+
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("aplication/json"));
+
+                try
+                {
+                    var response = await client.DeleteAsync($"api/Stories/{Story_Id}");
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return response.Content.ReadAsAsync<bool>().Result;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                    throw;
+                }
+            }
         }
     }
 }
