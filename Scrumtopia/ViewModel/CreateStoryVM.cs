@@ -110,10 +110,10 @@ namespace Scrumtopia.ViewModel
             set { _storyButton = value; OnPropertyChanged(); }
         }
 
-        public Story SelectedStory
+        public string SletButtonState
         {
-            get { return _selectedStory; }
-            set { _selectedStory = value; OnPropertyChanged();}
+            get { return _sletButtonState; }
+            set { _sletButtonState = value; OnPropertyChanged();}
         }
 
         public ICommand CreateCatCommand
@@ -122,32 +122,34 @@ namespace Scrumtopia.ViewModel
             set { _createCatCommand = value; OnPropertyChanged();}
         }
 
-        public ObservableCollection<Story> Stories { get; set; }
-
         public ICommand CreateStoryCommand
         {
             get { return _createStoryCommand; }
             set { _createStoryCommand = value; OnPropertyChanged(); }
         }
 
-        public ObservableCollection<Category> CategoriesForStory { get; set; }
-
-        public Singleton LeSingleton { get; set; }
-
-        public ObservableCollection<ScrumUser> UsersInProject { get; set; }
-
-        public string SletButtonState
-        {
-            get { return _sletButtonState; }
-            set { _sletButtonState = value; OnPropertyChanged();}
-        }
-
-        public Category SelectedCategory { get; set; }
-
-
         public ICommand SletCatCommand { get; set; }
 
         public ICommand AnnullerCatCommand { get; set; }
+
+        public ICommand RemoveStoryCommand { get; set; }
+
+        public Singleton LeSingleton { get; set; }
+
+        public ObservableCollection<Story> Stories { get; set; }
+
+        public ObservableCollection<Category> CategoriesForStory { get; set; }
+
+        public ObservableCollection<ScrumUser> UsersInProject { get; set; }
+
+        public Category SelectedCategory { get; set; }
+
+        public Story SelectedStory
+        {
+            get { return _selectedStory; }
+            set { _selectedStory = value; OnPropertyChanged();}
+        }
+       
 
 
         public CreateStoryVM()
@@ -163,7 +165,25 @@ namespace Scrumtopia.ViewModel
             SletButtonState = "Collapsed";
             SletCatCommand = new RelayCommand(DeleteCategory);
             AnnullerCatCommand = new RelayCommand(ResetCategory);
+            RemoveStoryCommand = new RelayCommand(RemoveStory);
             Load();
+        }
+
+        private async void RemoveStory()
+        {
+            bool success = await StoryPer.Delete(SelectedCategory.Category_Id);
+
+            if (success)
+            {
+
+                Category c = null;
+                foreach (Category category in CategoriesForStory)
+                {
+                    if (category.Category_Id == SelectedCategory.Category_Id) c = category;
+                }
+
+                CategoriesForStory.Remove(c);
+            }
         }
 
         public void Load()

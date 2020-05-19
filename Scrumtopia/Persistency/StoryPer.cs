@@ -200,5 +200,10 @@ namespace Scrumtopia.Persistency
                 }
             }
         }
+
+        public static async Task<bool> Delete(int selectedCategoryCategoryId)
+        {
+            return null;
+        }
     }
 }
