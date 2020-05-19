@@ -121,8 +121,10 @@
                 HorizontalAlignment="Center"
                 Orientation="Horizontal"
                 Spacing="10">
-                <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Opret" />
+                <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding ProjectButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Button Click="Open_Project" Content="Åben projekt" />
+                <Button Command="{Binding DeleteProCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Slet"
+                        />
             </StackPanel>
 
 

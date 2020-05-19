@@ -110,11 +110,29 @@ namespace restService_Scrumtopia.Controllers
         // PUT api/Projects/5
         public void Put(int id, [FromBody]string value)
         {
+            
         }
 
         // DELETE api/Projects/5
-        public void Delete(int id)
+        public bool Delete(int id)
         {
+            bool success = false;
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string queryString = $"DELETE FROM Sprints WHERE Project_Id = {id}; DELETE FROM Project_User_Relation WHERE Project_Id = {id}; DELETE FROM Stories WHERE Project_Id = {id}; DELETE FROM Projects WHERE Project_Id = {id}";
+
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                success = command.ExecuteNonQuery() > 0;
+
+                command.Connection.Close();
+
+            }
+
+            return success;
+
         }
     }
 }

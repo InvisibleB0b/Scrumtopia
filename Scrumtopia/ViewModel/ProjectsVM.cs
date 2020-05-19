@@ -11,6 +11,7 @@ using Scrumtopia.Annotations;
 using Scrumtopia.Common;
 using Scrumtopia.Converter;
 using Scrumtopia.Persistency;
+using Scrumtopia.View;
 using Scrumtopia_classes;
 
 namespace Scrumtopia.ViewModel
@@ -23,6 +24,8 @@ namespace Scrumtopia.ViewModel
         private DateTimeOffset  _projectDeadlineDate;
         private TimeSpan _projectDeadlineTime;
         private List<ScrumUser> _selectedUsers;
+        private Project _selectedProject;
+        private string _projectButton;
 
         public string Project_NameVM
         {
@@ -36,13 +39,13 @@ namespace Scrumtopia.ViewModel
             set { _projectDescription = value; OnPropertyChanged(); }
         }
 
-        public DateTimeOffset Project_DeadlineDate
+        public DateTimeOffset Project_DeadlineDateVM
         {
             get { return _projectDeadlineDate; }
             set {  _projectDeadlineDate = value; OnPropertyChanged(); }
         }
 
-        public TimeSpan Project_DeadlineTime
+        public TimeSpan Project_DeadlineTimeVM
         {
             get { return _projectDeadlineTime; }
             set { _projectDeadlineTime = value; OnPropertyChanged(); }
@@ -51,6 +54,12 @@ namespace Scrumtopia.ViewModel
        
 
         #endregion
+
+        public string ProjectButton
+        {
+            get => _projectButton;
+            set { _projectButton = value; OnPropertyChanged();}
+        }
 
         public ObservableCollection<Project> Projects { get; set; }
 
@@ -62,22 +71,43 @@ namespace Scrumtopia.ViewModel
             set { _selectedUsers = value; OnPropertyChanged();}
         }
 
-        public ICommand CreateCommand { get; set; }
-
         public Singleton LeSingleton { get; set; }
 
+        public ICommand CreateCommand { get; set; }
+
+        public ICommand DeleteProCommand { get; set; }
 
         public ProjectsVM()
         {
             Projects = new ObservableCollection<Project>();
             Users = new ObservableCollection<ScrumUser>();
             CreateCommand = new RelayCommand(CreateProject);
+            DeleteProCommand = new RelayCommand(DeletePro);
             LeSingleton = Singleton.Instance;
-            Project_DeadlineDate = TimeConverter.ConvertToDate(DateTime.Now.AddDays(14));
-            Project_DeadlineTime = TimeConverter.ConvertToTime(DateTime.Now);
+            Project_DeadlineDateVM = TimeConverter.ConvertToDate(DateTime.Now.AddDays(14));
+            Project_DeadlineTimeVM = TimeConverter.ConvertToTime(DateTime.Now);
             selectedUsers = new List<ScrumUser>();
+            ProjectButton = "Opret";
             LoadProjects();
             LoadUsers();
+        }
+
+        public async void DeletePro()
+        {
+            bool success = await ProjectsPer.Delete(LeSingleton.SelectedProject.Project_Id);
+
+            if (success)
+            {
+                Project p = null;
+
+                foreach (Project project in Projects)
+                {
+                    if (project.Project_Id == LeSingleton.SelectedProject.Project_Id) p = project;
+                }
+
+                Projects.Remove(p);
+            }
+
         }
 
         public async void LoadUsers()
@@ -109,7 +139,7 @@ namespace Scrumtopia.ViewModel
 
         public async void CreateProject()
         {
-           Project p = new Project(){Project_Name = Project_NameVM, Project_Description = Project_DescriptionVM, Project_Deadline = TimeConverter.ConverterToDateTime(Project_DeadlineDate, Project_DeadlineTime), UserIds = new List<int>()};
+           Project p = new Project(){Project_Name = Project_NameVM, Project_Description = Project_DescriptionVM, Project_Deadline = TimeConverter.ConverterToDateTime(Project_DeadlineDateVM, Project_DeadlineTimeVM), UserIds = new List<int>()};
 
             p.UserIds.Add(LeSingleton.LoggedUser.User_Id);
 
@@ -157,9 +187,18 @@ namespace Scrumtopia.ViewModel
             }
         }
 
+         public void StartProjectEdit()
+        {
+          
+        }
+
+         private void Edit()
+         {
+             
+         }
 
 
-        #region Prop change
+         #region Prop change
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -169,5 +208,8 @@ namespace Scrumtopia.ViewModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         } 
         #endregion
+
+
+       
     }
 }

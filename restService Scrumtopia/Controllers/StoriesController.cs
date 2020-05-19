@@ -188,6 +188,7 @@ namespace restService_Scrumtopia.Controllers
         {
 
             bool success = false;
+
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
                 string queryString = $"DELETE FROM STORIES WHERE Story_Id = {id}";
