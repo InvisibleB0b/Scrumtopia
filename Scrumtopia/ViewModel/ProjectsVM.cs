@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Resources;
 using System.Runtime.CompilerServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -17,13 +19,13 @@ using Scrumtopia_classes;
 
 namespace Scrumtopia.ViewModel
 {
-    public class ProjectsVM
+    public class ProjectsVM : INotifyPropertyChanged
     {
         #region Project props
-        private string _projectName;
-        private string _projectDescription;
-        private DateTimeOffset  _projectDeadlineDate;
-        private TimeSpan _projectDeadlineTime;
+        private string _projectNameVm;
+        private string _projectDescriptionVm;
+        private DateTimeOffset  _projectDeadlineDateVm;
+        private TimeSpan _projectDeadlineTimeVm;
         private List<ScrumUser> _selectedUsers;
         private string _projectButton;
         private ICommand _createCommand;
@@ -31,26 +33,26 @@ namespace Scrumtopia.ViewModel
 
         public string Project_NameVM
         {
-            get { return _projectName; }
-            set { _projectName = value; OnPropertyChanged();}
+            get { return _projectNameVm; }
+            set { _projectNameVm = value; OnPropertyChanged();}
         }
 
         public string Project_DescriptionVM
         {
-            get { return _projectDescription; }
-            set { _projectDescription = value; OnPropertyChanged(); }
+            get { return _projectDescriptionVm; }
+            set { _projectDescriptionVm = value; OnPropertyChanged(); }
         }
 
         public DateTimeOffset Project_DeadlineDateVM
         {
-            get { return _projectDeadlineDate; }
-            set {  _projectDeadlineDate = value; OnPropertyChanged(); }
+            get { return _projectDeadlineDateVm; }
+            set {  _projectDeadlineDateVm = value; OnPropertyChanged(); }
         }
 
         public TimeSpan Project_DeadlineTimeVM
         {
-            get { return _projectDeadlineTime; }
-            set { _projectDeadlineTime = value; OnPropertyChanged(); }
+            get { return _projectDeadlineTimeVm; }
+            set { _projectDeadlineTimeVm = value; OnPropertyChanged(); }
         }
 
        
@@ -65,9 +67,11 @@ namespace Scrumtopia.ViewModel
 
         public string SelectedProState
         {
-            get => _selectedProState;
+            get { return _selectedProState; }
             set { _selectedProState = value; OnPropertyChanged();}
         }
+
+      
 
         public ObservableCollection<Project> Projects { get; set; }
 
@@ -157,6 +161,8 @@ namespace Scrumtopia.ViewModel
                 Projects.Remove(p);
             }
 
+            Reset();
+
         }
 
         public async void LoadUsers()
@@ -203,7 +209,7 @@ namespace Scrumtopia.ViewModel
            {
                Projects.Add(projectToAdd);
            }
-            
+            Reset();
 
         }
 
@@ -240,37 +246,78 @@ namespace Scrumtopia.ViewModel
          {
              ProjectButton = "Ret";
              SelectedProState = "Visible";
+             
+             CreateCommand = new RelayCommand(Edit);
 
              Project_NameVM = LeSingleton.SelectedProject.Project_Name;
              Project_DescriptionVM = LeSingleton.SelectedProject.Project_Description;
              Project_DeadlineDateVM = TimeConverter.ConvertToDate(LeSingleton.SelectedProject.Project_Deadline);
              Project_DeadlineTimeVM = TimeConverter.ConvertToTime(LeSingleton.SelectedProject.Project_Deadline);
 
-             //ProjectUsers = await UsersPer.GetProjectUsers(LeSingleton.SelectedProject.Project_Id);
-
-             CreateCommand = new RelayCommand(Edit);
+           
 
            
          }
 
-         public void Edit()
+         public async void Edit()
          {
-             
+             Project p = new Project() { Project_Name = Project_NameVM, Project_Description = Project_DescriptionVM, Project_Deadline = TimeConverter.ConverterToDateTime(Project_DeadlineDateVM, Project_DeadlineTimeVM), UserIds = new List<int>() };
+
+             p.UserIds.Add(LeSingleton.LoggedUser.User_Id);
+
+             foreach (ScrumUser selectedUser in selectedUsers)
+             {
+                 p.UserIds.Add(selectedUser.User_Id);
+             }
+
+             bool success = await ProjectsPer.Edit(p, LeSingleton.SelectedProject.Project_Id);
+
+             if (success)
+             {
+                 foreach (Project project in Projects)
+                 {
+                     if (project.Project_Id == LeSingleton.SelectedProject.Project_Id)
+                     {
+                         project.Project_Name = Project_NameVM;
+                         project.Project_Description = Project_DescriptionVM;
+                         project.Project_Deadline =
+                             TimeConverter.ConverterToDateTime(Project_DeadlineDateVM, Project_DeadlineTimeVM);
+                         break;
+                       
+                     }
+                 }
+             }
+
+            Reset();
          }
 
+        public void Reset()
+        {
+            Project_NameVM = "";
+            Project_DescriptionVM = "";
+            LeSingleton = Singleton.Instance;
+            Project_DeadlineDateVM = TimeConverter.ConvertToDate(DateTime.Now.AddDays(14));
+            Project_DeadlineTimeVM = TimeConverter.ConvertToTime(DateTime.Now);
+            selectedUsers = new List<ScrumUser>();
+            ProjectButton = "Opret";
+            SelectedProState = "Collapsed";
+            CreateCommand = new RelayCommand(CreateProject);
+            
 
-         #region Prop change
+        }
 
+
+        #region Prop change
         public event PropertyChangedEventHandler PropertyChanged;
 
         [NotifyPropertyChangedInvocator]
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        } 
+        }
         #endregion
 
 
-       
+     
     }
 }

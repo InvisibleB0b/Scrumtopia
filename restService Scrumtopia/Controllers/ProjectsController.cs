@@ -116,7 +116,7 @@ namespace restService_Scrumtopia.Controllers
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                string queryString = $" DELETE FROM Project_User_Relation WHERE Project_Id = {id} UPDATE Projects SET Project_Name = '{value.Project_Name}', Project_Description = '{value.Project_Description}', Project_Deadline = '{endDate}' ";
+                string queryString = $" DELETE Project_User_Relation WHERE Project_Id = {id} UPDATE Projects SET Project_Name = '{value.Project_Name}', Project_Description = '{value.Project_Description}', Project_Deadline = '{endDate}' WHERE Project_Id = {id}";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();
 
@@ -150,7 +150,7 @@ namespace restService_Scrumtopia.Controllers
 
 
 
-            return rowAffected == 1;
+            return rowAffected >0;
         }
 
         // DELETE api/Projects/5
@@ -160,7 +160,7 @@ namespace restService_Scrumtopia.Controllers
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
-                string queryString = $"DELETE FROM Sprints WHERE Project_Id = {id}; DELETE FROM Project_User_Relation WHERE Project_Id = {id}; DELETE FROM Stories WHERE Project_Id = {id}; DELETE FROM Projects WHERE Project_Id = {id}";
+                string queryString = $"DELETE Sprints WHERE Project_Id = {id}; DELETE Project_User_Relation WHERE Project_Id = {id}; DELETE Stories WHERE Project_Id = {id}; DELETE Projects WHERE Project_Id = {id}";
 
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Connection.Open();

@@ -150,11 +150,11 @@
             <ListView
                 Grid.Row="1"
                 Grid.Column="1"
+                IsItemClickEnabled="True"
+                ItemClick="StartEdit"
                 ItemTemplate="{StaticResource ProjectsTemp}"
                 ItemsSource="{Binding Projects, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                ItemClick="StartEdit"
-                SelectionMode="Single" 
-                IsItemClickEnabled="True"/>
+                SelectionMode="Single" />
 
 
             <!--
@@ -188,8 +188,8 @@
                 </StackPanel>
                 <StackPanel Padding="10" Spacing="10">
                     <TextBlock Text="Projekt DeadLine :" />
-                    <DatePicker Date="{Binding Project_DeadlineDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <TimePicker Time="{Binding Project_DeadlineTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <DatePicker Date="{Binding Project_DeadlineDateVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                    <TimePicker Time="{Binding Project_DeadlineTimeVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
 
                 <StackPanel
@@ -198,11 +198,12 @@
                     Orientation="Horizontal"
                     Spacing="10">
                     <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding ProjectButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <Button Click="Open_Project" Content="Åben projekt" 
-                            Visibility="{Binding SelectedProState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                    <Button Click="startdel" Content="Slet"
-                            Visibility="{Binding SelectedProState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                           
+                    <Button Click="Open_Project" Content="Åben projekt" />
+                    <Button
+                        Click="startdel"
+                        Content="Slet"
+                        Visibility="{Binding SelectedProState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+
                 </StackPanel>
 
 
