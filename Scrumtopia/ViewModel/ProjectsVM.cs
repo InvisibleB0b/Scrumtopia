@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Windows.UI.WebUI;
 using Scrumtopia.Annotations;
 using Scrumtopia.Common;
 using Scrumtopia.Converter;
@@ -16,7 +17,7 @@ using Scrumtopia_classes;
 
 namespace Scrumtopia.ViewModel
 {
-    class ProjectsVM
+    public class ProjectsVM
     {
         #region Project props
         private string _projectName;
@@ -27,7 +28,6 @@ namespace Scrumtopia.ViewModel
         private Project _selectedProject;
         private string _projectButton;
         private string _deleteButtonState;
-        private string _popUpState;
 
         public string Project_NameVM
         {
@@ -59,25 +59,25 @@ namespace Scrumtopia.ViewModel
 
         public string ProjectButton
         {
-            get => _projectButton;
+            get { return _projectButton; }
             set { _projectButton = value; OnPropertyChanged();}
         }
 
         public string DeleteButtonState
         {
-            get => _deleteButtonState;
+            get { return _deleteButtonState; }
             set { _deleteButtonState = value; OnPropertyChanged();}
         }
 
-        public string PopUpState
-        {
-            get => _popUpState;
-            set { _popUpState = value; OnPropertyChanged(); }
-        }
+   
 
         public ObservableCollection<Project> Projects { get; set; }
 
         public ObservableCollection<ScrumUser> Users { get; set; }
+
+        public ObservableCollection<Sprint> SprintsInProj { get; set; }
+
+        public ObservableCollection<Story> StoryInProj { get; set; }
 
         public List<ScrumUser> selectedUsers
         {
@@ -106,15 +106,36 @@ namespace Scrumtopia.ViewModel
             selectedUsers = new List<ScrumUser>();
             ProjectButton = "Opret";
             DeleteButtonState = "Collapsed";
-            PopUpState = "Collapsed";
+            SprintsInProj = new ObservableCollection<Sprint>();
+            StoryInProj = new ObservableCollection<Story>();
             LoadProjects();
             LoadUsers();
         }
 
-        private void StartDelete()
+        public async void StartDelete()
         {
-            PopUpState = "Visible";
+            SprintsInProj.Clear();
+            StoryInProj.Clear();
+
+            List<Sprint> s = await SprintsPer.LoadBacklog(LeSingleton.SelectedProject.Project_Id);
+            if (s != null)
+            {
+                foreach (Sprint spr in s)
+                {
+                    SprintsInProj.Add(spr);
+                }
+            }
+
+            List<Story> stor = await StoryPer.LoadBacklog(LeSingleton.SelectedProject.Project_Id);
+            if (stor != null)
+            {
+                foreach (Story storey in stor)
+                {
+                    StoryInProj.Add(storey);
+                }
+            }
         }
+
 
         public async void DeletePro()
         {

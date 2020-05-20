@@ -62,6 +62,29 @@ namespace Scrumtopia.View
         //    vm.StartProjectEdit();
         //}
 
-     
+
+        private void startdel(object sender, RoutedEventArgs e)
+        {
+            ProjectsVM vm = (ProjectsVM) this.DataContext;
+            vm.StartDelete();
+
+
+            Grid mview = this.FindName("mainView") as Grid;
+            Grid pview = this.FindName("popview") as Grid;
+
+            mview.Visibility = Visibility.Collapsed;
+            pview.Visibility = Visibility.Visible;
+
+        }
+
+        private void Reset(object sender, RoutedEventArgs e)
+        {
+
+            Grid mview = this.FindName("mainView") as Grid;
+            Grid pview = this.FindName("popview") as Grid;
+
+            mview.Visibility = Visibility.Visible;
+            pview.Visibility = Visibility.Collapsed;
+        }
     }
 }
