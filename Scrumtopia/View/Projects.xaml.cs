@@ -55,14 +55,6 @@ namespace Scrumtopia.View
             vm.HandleUncheck(name);
         }
 
-        //private void StartEdit(object sender, ItemClickEventArgs e)
-        //{
-        //    ProjectsVM vm = (ProjectsVM) this.DataContext;
-        //    vm.SelectedProject = (Project) e.ClickedItem;
-        //    vm.StartProjectEdit();
-        //}
-
-
         private void startdel(object sender, RoutedEventArgs e)
         {
             ProjectsVM vm = (ProjectsVM) this.DataContext;
@@ -85,6 +77,14 @@ namespace Scrumtopia.View
 
             mview.Visibility = Visibility.Visible;
             pview.Visibility = Visibility.Collapsed;
+        }
+
+        private void StartEdit(object sender, ItemClickEventArgs e)
+        {
+            ProjectsVM vm = (ProjectsVM)this.DataContext;
+            vm.LeSingleton.SelectedProject = (Project) e.ClickedItem;
+
+            vm.StartProjectEdit();
         }
     }
 }

@@ -152,8 +152,9 @@
                 Grid.Column="1"
                 ItemTemplate="{StaticResource ProjectsTemp}"
                 ItemsSource="{Binding Projects, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectedItem="{Binding LeSingleton.SelectedProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                SelectionMode="Single" />
+                ItemClick="StartEdit"
+                SelectionMode="Single" 
+                IsItemClickEnabled="True"/>
 
 
             <!--
@@ -180,6 +181,7 @@
                 <StackPanel Padding="10">
                     <TextBlock Text="Projekt Deltagere :" />
                     <GridView
+                        x:Name="AllUsers"
                         ItemTemplate="{StaticResource UsersTemp}"
                         ItemsSource="{Binding Users, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         SelectionMode="None" />
@@ -196,8 +198,11 @@
                     Orientation="Horizontal"
                     Spacing="10">
                     <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding ProjectButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <Button Click="Open_Project" Content="Åben projekt" />
-                    <Button Click="startdel" Content="Slet" />
+                    <Button Click="Open_Project" Content="Åben projekt" 
+                            Visibility="{Binding SelectedProState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Button Click="startdel" Content="Slet"
+                            Visibility="{Binding SelectedProState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                           
                 </StackPanel>
 
 

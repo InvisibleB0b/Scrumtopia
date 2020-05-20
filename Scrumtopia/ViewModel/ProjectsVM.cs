@@ -25,9 +25,9 @@ namespace Scrumtopia.ViewModel
         private DateTimeOffset  _projectDeadlineDate;
         private TimeSpan _projectDeadlineTime;
         private List<ScrumUser> _selectedUsers;
-        private Project _selectedProject;
         private string _projectButton;
-        private string _deleteButtonState;
+        private ICommand _createCommand;
+        private string _selectedProState;
 
         public string Project_NameVM
         {
@@ -63,13 +63,12 @@ namespace Scrumtopia.ViewModel
             set { _projectButton = value; OnPropertyChanged();}
         }
 
-        public string DeleteButtonState
+        public string SelectedProState
         {
-            get { return _deleteButtonState; }
-            set { _deleteButtonState = value; OnPropertyChanged();}
+            get => _selectedProState;
+            set { _selectedProState = value; OnPropertyChanged();}
         }
 
-        
         public ObservableCollection<Project> Projects { get; set; }
 
         public ObservableCollection<ScrumUser> Users { get; set; }
@@ -86,7 +85,13 @@ namespace Scrumtopia.ViewModel
 
         public Singleton LeSingleton { get; set; }
 
-        public ICommand CreateCommand { get; set; }
+        public List<ScrumUser> ProjectUsers { get; set; }
+
+        public ICommand CreateCommand
+        {
+            get { return _createCommand; }
+            set { _createCommand = value; OnPropertyChanged();}
+        }
 
         public ICommand DeleteProCommand { get; set; }
 
@@ -104,7 +109,7 @@ namespace Scrumtopia.ViewModel
             Project_DeadlineTimeVM = TimeConverter.ConvertToTime(DateTime.Now);
             selectedUsers = new List<ScrumUser>();
             ProjectButton = "Opret";
-            DeleteButtonState = "Collapsed";
+            SelectedProState = "Collapsed";
             SprintsInProj = new ObservableCollection<Sprint>();
             StoryInProj = new ObservableCollection<Story>();
             LoadProjects();
@@ -231,12 +236,24 @@ namespace Scrumtopia.ViewModel
             }
         }
 
-         public void StartProjectEdit()
-        {
-          
-        }
+         public  void StartProjectEdit()
+         {
+             ProjectButton = "Ret";
+             SelectedProState = "Visible";
 
-         private void Edit()
+             Project_NameVM = LeSingleton.SelectedProject.Project_Name;
+             Project_DescriptionVM = LeSingleton.SelectedProject.Project_Description;
+             Project_DeadlineDateVM = TimeConverter.ConvertToDate(LeSingleton.SelectedProject.Project_Deadline);
+             Project_DeadlineTimeVM = TimeConverter.ConvertToTime(LeSingleton.SelectedProject.Project_Deadline);
+
+             //ProjectUsers = await UsersPer.GetProjectUsers(LeSingleton.SelectedProject.Project_Id);
+
+             CreateCommand = new RelayCommand(Edit);
+
+           
+         }
+
+         public void Edit()
          {
              
          }
