@@ -12,7 +12,7 @@ namespace restService_Scrumtopia.Controllers
     public class SprintsController : ApiController
     {
 
-        public static string ConnectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Scrumtopia;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
+        public static string ConnectionString = "Data Source=scrumtopia.database.windows.net;Initial Catalog=Scrumtopia;User ID=admin10;Password=Nonsecret10;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
         // GET api/Stories
         public List<Sprint> GetBacklog(int Project_id)
