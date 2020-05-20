@@ -69,8 +69,7 @@ namespace Scrumtopia.ViewModel
             set { _deleteButtonState = value; OnPropertyChanged();}
         }
 
-   
-
+        
         public ObservableCollection<Project> Projects { get; set; }
 
         public ObservableCollection<ScrumUser> Users { get; set; }

@@ -108,9 +108,49 @@ namespace restService_Scrumtopia.Controllers
         }
 
         // PUT api/Projects/5
-        public void Put(int id, [FromBody]string value)
+        public bool Put(int id, [FromBody]Project value)
         {
+            int rowAffected = 0;
+            string endDate = value.Project_Deadline.ToString("yyyy - MM - dd HH: mm:ss");
             
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string queryString = $" DELETE FROM Project_User_Relation WHERE Project_Id = {id} UPDATE Projects SET Project_Name = '{value.Project_Name}', Project_Description = '{value.Project_Description}', Project_Deadline = '{endDate}' ";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                rowAffected = command.ExecuteNonQuery();
+
+
+                command.Connection.Close();
+                string valueString = "";
+
+                foreach (int valueUserId in value.UserIds)
+                {
+                    if (valueString == "")
+                    {
+                        valueString += $"({id}, {valueUserId})";
+                    }
+                    else
+                    {
+                        valueString += $", ({id}, {valueUserId})";
+                    }
+
+                }
+
+                string queryString2 = $"INSERT INTO Project_User_Relation VALUES{valueString}";
+                SqlCommand command2 = new SqlCommand(queryString2, connection);
+                command2.Connection.Open();
+
+                command2.ExecuteNonQuery();
+
+                command2.Connection.Close();
+            }
+
+
+
+            return rowAffected == 1;
         }
 
         // DELETE api/Projects/5
