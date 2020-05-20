@@ -192,9 +192,13 @@
                 <DatePicker Date="{Binding Sprint_EndDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <TimePicker Time="{Binding Sprint_EndTime}" />
             </StackPanel>
-
-            <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding SprintButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding SprintButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button
+                    Command="{Binding SletCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                    Content="Slet"
+                    Visibility="{Binding SletState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            </StackPanel>
         </StackPanel>
 
         <!--  Alle Sprints  -->

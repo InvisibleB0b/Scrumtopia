@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,13 @@ namespace Scrumtopia.ViewModel
         public ObservableCollection<Sprint> Sprints { get; set; }
         public Story DragStory { get; set; }
         public Sprint SelectedSprint { get; set; }
+        public ICommand SletCommand { get; set; }
+
+        public string SletState
+        {
+            get { return _sletState; }
+            set { _sletState = value;  OnPropertyChanged();}
+        }
 
         public string SprintButton
         {
@@ -45,6 +53,7 @@ namespace Scrumtopia.ViewModel
         private string _sprintGoalVm;
         private ICommand _createCommand;
         private string _sprintButton;
+        private string _sletState;
 
         public DateTimeOffset Sprint_StartDate
         {
@@ -83,10 +92,38 @@ namespace Scrumtopia.ViewModel
             Backlog = new ObservableCollection<Story>();
             SprintBacklog = new ObservableCollection<Story>();
             LeSingleton = Singleton.Instance;
+            SletCommand = new RelayCommand(DeleteSprint);
             CreateCommand = new RelayCommand(Create);
             Sprints = new ObservableCollection<Sprint>();
+            SletState = "Collapsed";
             LoadSprints();
             Load();
+        }
+
+        public async void DeleteSprint()
+        {
+            bool success = await SprintsPer.DeleteSprint(SelectedSprint.Sprint_Id);
+
+            Sprint sprintToRemove = null;
+
+            if (success)
+            {
+                foreach (Sprint sprint in Sprints)
+                {
+                    if (SelectedSprint.Sprint_Id == sprint.Sprint_Id )
+                    {
+                        sprintToRemove = sprint;
+                    }
+                }
+
+                if (sprintToRemove!= null)
+                {
+                     Sprints.Remove(sprintToRemove);
+                }
+               
+            }
+
+            SprintReset();
         }
 
         public async void LoadSprints()
@@ -161,8 +198,10 @@ namespace Scrumtopia.ViewModel
 
         public async void StartEdit()
         {
+            
             SprintReset();
 
+            SletState = "Visible";
             SprintButton = "Ret";
             CreateCommand = new RelayCommand(EditSprint);
             Sprint_StartDate = TimeConverter.ConvertToDate(SelectedSprint.Sprint_Start);
@@ -227,6 +266,7 @@ namespace Scrumtopia.ViewModel
             SprintBacklog.Clear();
             Backlog.Clear();
             Sprint_GoalVM = "";
+            SletState = "Collapsed";
             Load();
         }
 

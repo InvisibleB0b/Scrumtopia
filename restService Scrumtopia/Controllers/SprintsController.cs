@@ -117,8 +117,25 @@ namespace restService_Scrumtopia.Controllers
         }
 
         // DELETE api/Stories/5
-        public void Delete(int id)
+        public bool Delete(int id)
         {
+            bool succuess = false;
+
+        
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string queryString = $@"DELETE FROM Sprints WHERE Sprint_Id = {id} UPDATE Stories SET Sprint_Id = 0 WHERE Sprint_Id = {id}";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                succuess = command.ExecuteNonQuery() > 0;
+
+
+                command.Connection.Close();
+            }
+
+            return succuess;
+
         }
     }
 }
