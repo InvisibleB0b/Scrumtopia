@@ -26,6 +26,8 @@ namespace Scrumtopia.ViewModel
         private List<ScrumUser> _selectedUsers;
         private Project _selectedProject;
         private string _projectButton;
+        private string _deleteButtonState;
+        private string _popUpState;
 
         public string Project_NameVM
         {
@@ -61,6 +63,18 @@ namespace Scrumtopia.ViewModel
             set { _projectButton = value; OnPropertyChanged();}
         }
 
+        public string DeleteButtonState
+        {
+            get => _deleteButtonState;
+            set { _deleteButtonState = value; OnPropertyChanged();}
+        }
+
+        public string PopUpState
+        {
+            get => _popUpState;
+            set { _popUpState = value; OnPropertyChanged(); }
+        }
+
         public ObservableCollection<Project> Projects { get; set; }
 
         public ObservableCollection<ScrumUser> Users { get; set; }
@@ -77,19 +91,29 @@ namespace Scrumtopia.ViewModel
 
         public ICommand DeleteProCommand { get; set; }
 
+        public ICommand StartDeleteCommand { get; set; }
+
         public ProjectsVM()
         {
             Projects = new ObservableCollection<Project>();
             Users = new ObservableCollection<ScrumUser>();
             CreateCommand = new RelayCommand(CreateProject);
+            StartDeleteCommand = new RelayCommand(StartDelete);
             DeleteProCommand = new RelayCommand(DeletePro);
             LeSingleton = Singleton.Instance;
             Project_DeadlineDateVM = TimeConverter.ConvertToDate(DateTime.Now.AddDays(14));
             Project_DeadlineTimeVM = TimeConverter.ConvertToTime(DateTime.Now);
             selectedUsers = new List<ScrumUser>();
             ProjectButton = "Opret";
+            DeleteButtonState = "Collapsed";
+            PopUpState = "Collapsed";
             LoadProjects();
             LoadUsers();
+        }
+
+        private void StartDelete()
+        {
+            PopUpState = "Visible";
         }
 
         public async void DeletePro()

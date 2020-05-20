@@ -175,7 +175,6 @@ namespace Scrumtopia.ViewModel
 
             if (success)
             {
-
                 Story s = null;
                 foreach (Story story in Stories)
                 {

@@ -123,13 +123,14 @@
                 Spacing="10">
                 <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding ProjectButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Button Click="Open_Project" Content="Åben projekt" />
-                <Button Command="{Binding DeleteProCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Slet"
-                        />
+                <Button Command="{Binding StartDeleteCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Slet"/>
             </StackPanel>
 
 
         </StackPanel>
-
+      <StackPanel>
+          <TextBlock Text="3513545"></TextBlock>
+      </StackPanel>
 
 
     </Grid>
