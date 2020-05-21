@@ -251,6 +251,13 @@ namespace Scrumtopia.ViewModel
                         break;
                     }
                 }
+                foreach (Story storey in Stories)
+                {
+                    if (storey.Category.Category_Id == SelectedCategory.Category_Id)
+                    {
+                        storey.Category.Category_Color = Category_ColorVM;
+                    }
+                }
             }
             ResetCategory();
 
