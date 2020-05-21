@@ -89,6 +89,7 @@ namespace Scrumtopia.ViewModel
         private ICommand _createStoryCommand;
         private ICommand _createCatCommand;
         private string _sletButtonState;
+        private string _catButton;
 
         public string Category_NameVM
         {
@@ -108,6 +109,12 @@ namespace Scrumtopia.ViewModel
         {
             get { return _storyButton; }
             set { _storyButton = value; OnPropertyChanged(); }
+        }
+
+        public string CatButton
+        {
+            get { return _catButton; }
+            set { _catButton = value; OnPropertyChanged();}
         }
 
         public string SletButtonState
@@ -162,6 +169,7 @@ namespace Scrumtopia.ViewModel
             AssigneeVM = new ScrumUser(){User_Id = 0};
             UsersInProject = new ObservableCollection<ScrumUser>();
             StoryButton = "Opret";
+            CatButton = "Opret";
             SletButtonState = "Collapsed";
             SletCatCommand = new RelayCommand(DeleteCategory);
             AnnullerCatCommand = new RelayCommand(ResetCategory);
@@ -222,6 +230,30 @@ namespace Scrumtopia.ViewModel
             Category_NameVM = SelectedCategory.Category_Name;
             Category_ColorVM = SelectedCategory.Category_Color;
             SletButtonState = "Visible";
+            CreateCatCommand = new RelayCommand(EditCat);
+            CatButton = "Ret";
+        }
+
+        public async void EditCat()
+        {
+            Category c = new Category(){Category_Color = Category_ColorVM, Category_Name = Category_NameVM};
+
+            bool success = await CategoryPer.EditCategory(c, SelectedCategory.Category_Id);
+
+            if (success)
+            {
+                foreach (Category category in CategoriesForStory)
+                {
+                    if (category.Category_Id == SelectedCategory.Category_Id)
+                    {
+                        category.Category_Name = Category_NameVM;
+                        category.Category_Color = Category_ColorVM;
+                        break;
+                    }
+                }
+            }
+            ResetCategory();
+
         }
 
         public void ResetCategory()
@@ -230,6 +262,8 @@ namespace Scrumtopia.ViewModel
             SelectedCategory = null;
             SletButtonState = "Collapsed";
             Category_ColorVM = "#FFFFFFFF";
+            CatButton = "Opret";
+            CreateCatCommand = new RelayCommand(CreatCategory);
         }
 
      

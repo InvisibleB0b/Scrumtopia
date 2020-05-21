@@ -79,8 +79,22 @@ namespace restService_Scrumtopia.Controllers
         }
 
         // PUT api/Categories/5
-        public void Put(int id, [FromBody]string value)
+        public bool Put(int id, [FromBody]Category value)
         {
+            bool succes = false;
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                string queryString = $"UPDATE Categories SET Category_Name = '{value.Category_Name}', Category_Color = '{value.Category_Color}' WHERE Category_Id = {id}";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Connection.Open();
+
+                 succes = command.ExecuteNonQuery() > 0;
+                
+                command.Connection.Close();
+           
+            }
+
+            return succes;
         }
 
         // DELETE api/Categories/5

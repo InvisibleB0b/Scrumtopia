@@ -194,10 +194,10 @@
             </StackPanel>
             <StackPanel>
                 <TextBlock Text="Category Color" />
-                <ColorPicker ColorChanged="ColorChange" />
+                <ColorPicker x:Name="ColorPickeren" ColorChanged="ColorChange" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <Button Command="{Binding CreateCatCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Opret" />
+                <Button Command="{Binding CreateCatCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding CatButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
             </StackPanel>
 
