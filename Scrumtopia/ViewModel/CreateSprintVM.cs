@@ -16,44 +16,17 @@ using Scrumtopia_classes;
 
 namespace Scrumtopia.ViewModel
 {
-   public class CreateSprintVM:INotifyPropertyChanged
+   public class CreateSprintVM : INotifyPropertyChanged
     {
 
-        public ObservableCollection<Story> Backlog { get; set; }
-        public ObservableCollection<Story> SprintBacklog { get; set; }
-        public Singleton LeSingleton { get; set; }
-        public ObservableCollection<Sprint> Sprints { get; set; }
-        public Story DragStory { get; set; }
-        public Sprint SelectedSprint { get; set; }
-        public ICommand SletCommand { get; set; }
 
-        public string SletState
-        {
-            get { return _sletState; }
-            set { _sletState = value;  OnPropertyChanged();}
-        }
+        #region CreateSprint Properties
 
-        public string SprintButton
-        {
-            get { return _sprintButton; }
-            set { _sprintButton = value; OnPropertyChanged(); }
-        }
-
-        public ICommand CreateCommand
-        {
-            get { return _createCommand; }
-            set { _createCommand = value; OnPropertyChanged();}
-        }
-
-        #region Create props
         private DateTimeOffset _sprintStartDate;
         private TimeSpan _sprintStartTime;
         private DateTimeOffset _sprintEndDate;
         private TimeSpan _sprintEndTime;
         private string _sprintGoalVm;
-        private ICommand _createCommand;
-        private string _sprintButton;
-        private string _sletState;
 
         public DateTimeOffset Sprint_StartDate
         {
@@ -85,16 +58,73 @@ namespace Scrumtopia.ViewModel
             set { _sprintGoalVm = value; OnPropertyChanged(); }
         }
 
+
         #endregion
+
+
+        #region Button states
+
+        private string _sprintButton;
+        private string _sletState;
+
+        public string SprintButton
+        {
+            get { return _sprintButton; }
+            set { _sprintButton = value; OnPropertyChanged(); }
+        }
+
+        public string SletState
+        {
+            get { return _sletState; }
+            set { _sletState = value;  OnPropertyChanged();}
+        }
+
+        #endregion
+
+
+        #region Commands
+
+        private ICommand _createCommand;
+
+        public ICommand CreateCommand
+        {
+            get { return _createCommand; }
+            set { _createCommand = value; OnPropertyChanged();}
+        }
+
+        public ICommand SletCommand { get; set; }
+
+        #endregion
+
+
+        #region Visnigs properties
+
+        public ObservableCollection<Story> Backlog { get; set; }
+        public ObservableCollection<Story> SprintBacklog { get; set; }
+        public Singleton LeSingleton { get; set; }
+        public ObservableCollection<Sprint> Sprints { get; set; }
+
+        #endregion
+
+        
+        #region Objecter til redigering props
+
+        public Story DragStory { get; set; }
+        public Sprint SelectedSprint { get; set; }
+
+
+        #endregion
+
+
 
         public CreateSprintVM()
         {
             Backlog = new ObservableCollection<Story>();
             SprintBacklog = new ObservableCollection<Story>();
+            Sprints = new ObservableCollection<Sprint>();
             LeSingleton = Singleton.Instance;
             SletCommand = new RelayCommand(DeleteSprint);
             CreateCommand = new RelayCommand(Create);
-            Sprints = new ObservableCollection<Sprint>();
             SletState = "Collapsed";
             LoadSprints();
             Load();
@@ -102,8 +132,12 @@ namespace Scrumtopia.ViewModel
 
         #region Metoder
 
-            #region Load Metoder
-        public async void Load()
+        #region Load Metoder
+
+            /// <summary>
+            ///Sætter load udenfor ¨konstrunktoren for at kunne overskue det bedre
+            /// </summary>
+            public async void Load()
         {
             SprintButton = "Opret";
             Sprint_StartDate = DateTimeOffset.Now;
@@ -120,7 +154,9 @@ namespace Scrumtopia.ViewModel
             }
         }
 
-
+        /// <summary>
+        /// Anvender det valgte projekt i singletonnen til at hente alle sprint der ligger tilknyttet til projektet ud og sætte det ind i OC der er binded op til viewet.
+        /// </summary>
         public async void LoadSprints()
         {
             List<Sprint> sp = await SprintsPer.LoadBacklog(LeSingleton.SelectedProject.Project_Id);
@@ -136,8 +172,39 @@ namespace Scrumtopia.ViewModel
 
         #endregion
 
-            #region Delete metode
 
+        #region Create Metode
+
+        /// <summary>
+        /// Generere et nyt Objec af typen sprint for at kunne sende det med til WEB API'en for at kunne generere et nyt object der bliver sendt tilbage fra api'en hvis det lykkes.
+        /// </summary>
+        public async void Create()
+        {
+            List<int> storyId = new List<int>();
+
+            foreach (Story storey in SprintBacklog)
+            {
+                storyId.Add(storey.Story_Id);
+            }
+
+            Sprint sp = await SprintsPer.Create(new Sprint() { Story_Ids = storyId, Sprint_Goal = Sprint_GoalVM, Sprint_Start = TimeConverter.ConverterToDateTime(Sprint_StartDate, Sprint_StartTime), Sprint_End = TimeConverter.ConverterToDateTime(Sprint_EndDate, Sprint_EndTime) }, LeSingleton.SelectedProject.Project_Id);
+
+            if (sp != null)
+            {
+                Sprints.Add(sp);
+            }
+
+            SprintReset();
+        }
+
+        #endregion
+
+
+        #region Delete metode
+
+            /// <summary>
+            /// Beder persitencn om at slette sprintet ved hjælp af API'en, his det lykkes så fjernes sprintet fra view.
+            /// </summary>
         public async void DeleteSprint()
         {
             bool success = await SprintsPer.DeleteSprint(SelectedSprint.Sprint_Id);
@@ -160,7 +227,7 @@ namespace Scrumtopia.ViewModel
                 }
 
             }
-
+            /// Derudover fjerner vi også dataen i indput felterne i sprint viewet 
             SprintReset();
         }
 
@@ -168,29 +235,14 @@ namespace Scrumtopia.ViewModel
 
         #endregion
 
-            #region Create Metode
-        public async void Create()
-        {
-            List<int> storyId = new List<int>();
 
-            foreach (Story storey in SprintBacklog)
-            {
-                storyId.Add(storey.Story_Id);
-            }
+        #region Flyt story metode
 
-            Sprint sp = await SprintsPer.Create(new Sprint() { Story_Ids = storyId, Sprint_Goal = Sprint_GoalVM, Sprint_Start = TimeConverter.ConverterToDateTime(Sprint_StartDate, Sprint_StartTime), Sprint_End = TimeConverter.ConverterToDateTime(Sprint_EndDate, Sprint_EndTime) }, LeSingleton.SelectedProject.Project_Id);
-
-            if (sp != null)
-            {
-                Sprints.Add(sp);
-            }
-
-            SprintReset();
-        }
-
-        #endregion
-
-            #region Flyt story metode
+        /// <summary>
+        /// Tilføjer en story til et sprint. Når man tilføjer en story til et sprint vil den blive fjernet fra backloggen.
+        /// </summary>
+        /// <param name="name">?????</param>
+        
         public void MoveStory(string name)
         {
 
@@ -206,17 +258,23 @@ namespace Scrumtopia.ViewModel
                 case "SprintBacklog":
                     SprintBacklog.Add(DragStory);
                     Backlog.Remove(DragStory);
+
                     break;
             }
 
 
 
-                  }
+        }
         #endregion 
 
-            #region Edit metoder
 
-            public async void StartEdit()
+        #region Edit metoder
+
+        /// <summary>
+        /// Starter med at opdaterer knappen til at udføre en anden funktion end normalt.
+        /// Derefter udfylder vi inout felterne i Viewet så brugeren kan se hvad de er igang med at redigere.
+        /// </summary>
+        public async void StartEdit() 
         {
             
             SprintReset();
@@ -257,6 +315,10 @@ namespace Scrumtopia.ViewModel
 
         }
 
+        /// <summary>
+        /// Når brugeren har redigeret og trykket på knappen sendes et nyt object med til API'en for at kunne redigere objektet,
+        /// hvis API'en lykkes retunere den true og objektet bliver opdateret i viewet.
+        /// </summary>
         public async void EditSprint()
         {
             
@@ -282,7 +344,11 @@ namespace Scrumtopia.ViewModel
         #endregion
 
 
+        #region Reset sprint metode
 
+        /// <summary>
+        /// Bruges til at restte viewet tilbage til normalen så der ikke står noget i input felterne
+        /// </summary>
         public void SprintReset()
         {
             SprintBacklog.Clear();
@@ -291,6 +357,8 @@ namespace Scrumtopia.ViewModel
             SletState = "Collapsed";
             Load();
         }
+
+        #endregion
         
 
         #endregion
