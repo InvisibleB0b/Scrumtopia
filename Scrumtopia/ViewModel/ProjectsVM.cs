@@ -91,15 +91,18 @@ namespace Scrumtopia.ViewModel
 
         public List<ScrumUser> ProjectUsers { get; set; }
 
+        #region Commands
+
         public ICommand CreateCommand
         {
             get { return _createCommand; }
-            set { _createCommand = value; OnPropertyChanged();}
+            set { _createCommand = value; OnPropertyChanged(); }
         }
 
         public ICommand DeleteProCommand { get; set; }
 
-        public ICommand StartDeleteCommand { get; set; }
+        public ICommand StartDeleteCommand { get; set; } 
+        #endregion
 
         public ProjectsVM()
         {
@@ -119,6 +122,38 @@ namespace Scrumtopia.ViewModel
             LoadProjects();
             LoadUsers();
         }
+
+        #region Load methods
+        public async void LoadUsers()
+        {
+            List<ScrumUser> u = await UsersPer.GetAllUsers();
+
+            if (u != null)
+            {
+                foreach (ScrumUser scrumUser in u)
+                {
+                    if (scrumUser.User_Id != LeSingleton.LoggedUser.User_Id) { Users.Add(scrumUser); }
+
+                }
+            }
+        }
+
+        public async void LoadProjects()
+        {
+            List<Project> leProjects = await ProjectsPer.GetProjects(LeSingleton.LoggedUser.User_Id);
+
+            if (leProjects != null)
+            {
+                foreach (Project leProject in leProjects)
+                {
+                    Projects.Add(leProject);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Delete methods
 
         public async void StartDelete()
         {
@@ -165,53 +200,36 @@ namespace Scrumtopia.ViewModel
 
         }
 
-        public async void LoadUsers()
-        {
-            List<ScrumUser> u = await UsersPer.GetAllUsers();
 
-            if (u!= null)
-            {
-                foreach (ScrumUser scrumUser in u)
-                {
-                    if (scrumUser.User_Id != LeSingleton.LoggedUser.User_Id) { Users.Add(scrumUser); }
-                    
-                } 
-            }
-        }
+        #endregion
 
-        public async void LoadProjects()
-        {
-            List<Project> leProjects = await ProjectsPer.GetProjects(LeSingleton.LoggedUser.User_Id);
-
-            if (leProjects != null)
-            {
-                foreach (Project leProject in leProjects)
-                {
-                    Projects.Add(leProject);
-                }
-            }
-        }
+        #region Create method
 
         public async void CreateProject()
         {
-           Project p = new Project(){Project_Name = Project_NameVM, Project_Description = Project_DescriptionVM, Project_Deadline = TimeConverter.ConverterToDateTime(Project_DeadlineDateVM, Project_DeadlineTimeVM), UserIds = new List<int>()};
+            Project p = new Project() { Project_Name = Project_NameVM, Project_Description = Project_DescriptionVM, Project_Deadline = TimeConverter.ConverterToDateTime(Project_DeadlineDateVM, Project_DeadlineTimeVM), UserIds = new List<int>() };
 
             p.UserIds.Add(LeSingleton.LoggedUser.User_Id);
 
-           foreach (ScrumUser selectedUser in selectedUsers)
-           {
-               p.UserIds.Add(selectedUser.User_Id);
-           }
+            foreach (ScrumUser selectedUser in selectedUsers)
+            {
+                p.UserIds.Add(selectedUser.User_Id);
+            }
 
-           Project projectToAdd = await ProjectsPer.Create(p);
+            Project projectToAdd = await ProjectsPer.Create(p);
 
-           if (projectToAdd != null)
-           {
-               Projects.Add(projectToAdd);
-           }
+            if (projectToAdd != null)
+            {
+                Projects.Add(projectToAdd);
+            }
             Reset();
 
         }
+
+
+        #endregion
+
+        #region Handle check
 
         public void HandleCheck(string name)
         {
@@ -241,55 +259,60 @@ namespace Scrumtopia.ViewModel
                 selectedUsers.Remove(u);
             }
         }
+        #endregion
 
-         public  void StartProjectEdit()
-         {
-             ProjectButton = "Ret";
-             SelectedProState = "Visible";
-             
-             CreateCommand = new RelayCommand(Edit);
+        #region Edit methods
 
-             Project_NameVM = LeSingleton.SelectedProject.Project_Name;
-             Project_DescriptionVM = LeSingleton.SelectedProject.Project_Description;
-             Project_DeadlineDateVM = TimeConverter.ConvertToDate(LeSingleton.SelectedProject.Project_Deadline);
-             Project_DeadlineTimeVM = TimeConverter.ConvertToTime(LeSingleton.SelectedProject.Project_Deadline);
+        public void StartProjectEdit()
+        {
+            ProjectButton = "Ret";
+            SelectedProState = "Visible";
 
-           
+            CreateCommand = new RelayCommand(Edit);
 
-           
-         }
+            Project_NameVM = LeSingleton.SelectedProject.Project_Name;
+            Project_DescriptionVM = LeSingleton.SelectedProject.Project_Description;
+            Project_DeadlineDateVM = TimeConverter.ConvertToDate(LeSingleton.SelectedProject.Project_Deadline);
+            Project_DeadlineTimeVM = TimeConverter.ConvertToTime(LeSingleton.SelectedProject.Project_Deadline);
 
-         public async void Edit()
-         {
-             Project p = new Project() { Project_Name = Project_NameVM, Project_Description = Project_DescriptionVM, Project_Deadline = TimeConverter.ConverterToDateTime(Project_DeadlineDateVM, Project_DeadlineTimeVM), UserIds = new List<int>() };
 
-             p.UserIds.Add(LeSingleton.LoggedUser.User_Id);
 
-             foreach (ScrumUser selectedUser in selectedUsers)
-             {
-                 p.UserIds.Add(selectedUser.User_Id);
-             }
 
-             bool success = await ProjectsPer.Edit(p, LeSingleton.SelectedProject.Project_Id);
+        }
 
-             if (success)
-             {
-                 foreach (Project project in Projects)
-                 {
-                     if (project.Project_Id == LeSingleton.SelectedProject.Project_Id)
-                     {
-                         project.Project_Name = Project_NameVM;
-                         project.Project_Description = Project_DescriptionVM;
-                         project.Project_Deadline =
-                             TimeConverter.ConverterToDateTime(Project_DeadlineDateVM, Project_DeadlineTimeVM);
-                         break;
-                       
-                     }
-                 }
-             }
+        public async void Edit()
+        {
+            Project p = new Project() { Project_Name = Project_NameVM, Project_Description = Project_DescriptionVM, Project_Deadline = TimeConverter.ConverterToDateTime(Project_DeadlineDateVM, Project_DeadlineTimeVM), UserIds = new List<int>() };
+
+            p.UserIds.Add(LeSingleton.LoggedUser.User_Id);
+
+            foreach (ScrumUser selectedUser in selectedUsers)
+            {
+                p.UserIds.Add(selectedUser.User_Id);
+            }
+
+            bool success = await ProjectsPer.Edit(p, LeSingleton.SelectedProject.Project_Id);
+
+            if (success)
+            {
+                foreach (Project project in Projects)
+                {
+                    if (project.Project_Id == LeSingleton.SelectedProject.Project_Id)
+                    {
+                        project.Project_Name = Project_NameVM;
+                        project.Project_Description = Project_DescriptionVM;
+                        project.Project_Deadline =
+                            TimeConverter.ConverterToDateTime(Project_DeadlineDateVM, Project_DeadlineTimeVM);
+                        break;
+
+                    }
+                }
+            }
 
             Reset();
-         }
+        }
+
+        #endregion
 
         public void Reset()
         {

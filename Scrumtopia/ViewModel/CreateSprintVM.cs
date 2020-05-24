@@ -100,64 +100,10 @@ namespace Scrumtopia.ViewModel
             Load();
         }
 
-        public async void DeleteSprint()
-        {
-            bool success = await SprintsPer.DeleteSprint(SelectedSprint.Sprint_Id);
+        #region Metoder
 
-            Sprint sprintToRemove = null;
-
-            if (success)
-            {
-                foreach (Sprint sprint in Sprints)
-                {
-                    if (SelectedSprint.Sprint_Id == sprint.Sprint_Id )
-                    {
-                        sprintToRemove = sprint;
-                    }
-                }
-
-                if (sprintToRemove!= null)
-                {
-                     Sprints.Remove(sprintToRemove);
-                }
-               
-            }
-
-            SprintReset();
-        }
-
-        public async void LoadSprints()
-        {
-            List<Sprint> sp = await SprintsPer.LoadBacklog(LeSingleton.SelectedProject.Project_Id);
-            if (sp !=null)
-            {
-                foreach (Sprint sprint in sp)
-                {
-                    Sprints.Add(sprint);
-                } 
-            }
-        }
-
-        public async void Create()
-        {
-            List<int> storyId = new List<int>();
-
-            foreach (Story storey in SprintBacklog)
-            {
-                storyId.Add(storey.Story_Id);
-            }
-
-            Sprint sp = await SprintsPer.Create(new Sprint(){Story_Ids = storyId, Sprint_Goal = Sprint_GoalVM, Sprint_Start = TimeConverter.ConverterToDateTime(Sprint_StartDate, Sprint_StartTime), Sprint_End = TimeConverter.ConverterToDateTime(Sprint_EndDate, Sprint_EndTime)}, LeSingleton.SelectedProject.Project_Id);
-
-            if (sp != null)
-            {
-                Sprints.Add(sp);
-            }
-
-            SprintReset();
-        }
-
-        public  async void Load()
+            #region Load Metoder
+        public async void Load()
         {
             SprintButton = "Opret";
             Sprint_StartDate = DateTimeOffset.Now;
@@ -175,6 +121,76 @@ namespace Scrumtopia.ViewModel
         }
 
 
+        public async void LoadSprints()
+        {
+            List<Sprint> sp = await SprintsPer.LoadBacklog(LeSingleton.SelectedProject.Project_Id);
+            if (sp != null)
+            {
+                foreach (Sprint sprint in sp)
+                {
+                    Sprints.Add(sprint);
+                }
+            }
+        }
+
+
+        #endregion
+
+            #region Delete metode
+
+        public async void DeleteSprint()
+        {
+            bool success = await SprintsPer.DeleteSprint(SelectedSprint.Sprint_Id);
+
+            Sprint sprintToRemove = null;
+
+            if (success)
+            {
+                foreach (Sprint sprint in Sprints)
+                {
+                    if (SelectedSprint.Sprint_Id == sprint.Sprint_Id)
+                    {
+                        sprintToRemove = sprint;
+                    }
+                }
+
+                if (sprintToRemove != null)
+                {
+                    Sprints.Remove(sprintToRemove);
+                }
+
+            }
+
+            SprintReset();
+        }
+
+
+
+        #endregion
+
+            #region Create Metode
+        public async void Create()
+        {
+            List<int> storyId = new List<int>();
+
+            foreach (Story storey in SprintBacklog)
+            {
+                storyId.Add(storey.Story_Id);
+            }
+
+            Sprint sp = await SprintsPer.Create(new Sprint() { Story_Ids = storyId, Sprint_Goal = Sprint_GoalVM, Sprint_Start = TimeConverter.ConverterToDateTime(Sprint_StartDate, Sprint_StartTime), Sprint_End = TimeConverter.ConverterToDateTime(Sprint_EndDate, Sprint_EndTime) }, LeSingleton.SelectedProject.Project_Id);
+
+            if (sp != null)
+            {
+                Sprints.Add(sp);
+            }
+
+            SprintReset();
+        }
+
+        #endregion
+
+            #region Flyt story metode
         public void MoveStory(string name)
         {
 
@@ -184,7 +200,7 @@ namespace Scrumtopia.ViewModel
                 case "Backlog":
                     Backlog.Add(DragStory);
                     SprintBacklog.Remove(DragStory);
-                    
+
                     break;
 
                 case "SprintBacklog":
@@ -194,9 +210,13 @@ namespace Scrumtopia.ViewModel
             }
 
 
-        }
 
-        public async void StartEdit()
+                  }
+        #endregion 
+
+            #region Edit metoder
+
+            public async void StartEdit()
         {
             
             SprintReset();
@@ -259,6 +279,8 @@ namespace Scrumtopia.ViewModel
             SprintReset();
         }
 
+        #endregion
+
 
 
         public void SprintReset()
@@ -269,7 +291,9 @@ namespace Scrumtopia.ViewModel
             SletState = "Collapsed";
             Load();
         }
+        
 
+        #endregion
 
 
         #region PropChange
