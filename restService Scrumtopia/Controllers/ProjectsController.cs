@@ -14,6 +14,9 @@ namespace restService_Scrumtopia.Controllers
 
         public static string ConnectionString = "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=Scrumtopia;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False";
 
+
+        public ProjectsController() { }
+
         // GET api/Projects
         public List<Project> Get()
         {

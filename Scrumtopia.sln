@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "restService Scrumtopia", "r
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scrumtopia classes", "Scrumtopia classes\Scrumtopia classes.csproj", "{2DBA6470-BC20-4758-BDA4-B4550F5FA492}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnittestScrumtopia", "UnittestScrumtopia\UnittestScrumtopia.csproj", "{81F8CC73-7609-48EE-9422-CC9B95B47E45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -91,6 +93,26 @@ Global
 		{2DBA6470-BC20-4758-BDA4-B4550F5FA492}.Release|x64.Build.0 = Release|Any CPU
 		{2DBA6470-BC20-4758-BDA4-B4550F5FA492}.Release|x86.ActiveCfg = Release|Any CPU
 		{2DBA6470-BC20-4758-BDA4-B4550F5FA492}.Release|x86.Build.0 = Release|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Debug|ARM.Build.0 = Debug|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Debug|x64.Build.0 = Debug|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Debug|x86.Build.0 = Debug|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Release|ARM.ActiveCfg = Release|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Release|ARM.Build.0 = Release|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Release|ARM64.Build.0 = Release|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Release|x64.ActiveCfg = Release|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Release|x64.Build.0 = Release|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Release|x86.ActiveCfg = Release|Any CPU
+		{81F8CC73-7609-48EE-9422-CC9B95B47E45}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
