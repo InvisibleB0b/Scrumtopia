@@ -241,7 +241,7 @@ namespace Scrumtopia.ViewModel
         /// <summary>
         /// Tilføjer en story til et sprint. Når man tilføjer en story til et sprint vil den blive fjernet fra backloggen.
         /// </summary>
-        /// <param name="name">?????</param>
+        /// <param name="name">String name er navnet på det listviewet den skal flyttes hen til </param>
         
         public void MoveStory(string name)
         {
