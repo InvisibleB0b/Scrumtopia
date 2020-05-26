@@ -12,19 +12,30 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Scrumtopia.ViewModel;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace Scrumtopia
+namespace Scrumtopia.View
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class Login : Page
     {
-        public MainPage()
+        public Login()
         {
             this.InitializeComponent();
+        }
+
+        private async void LoginTry(object sender, RoutedEventArgs e)
+        {
+            LoginVM vm = (LoginVM) this.DataContext;
+            bool succes = await vm.InitLogin();
+            if (succes)
+            {
+                this.Frame.Navigate(typeof(Projects));
+            }
         }
     }
 }

@@ -1,0 +1,156 @@
+﻿<Page
+    x:Class="Scrumtopia.View.SprintBacklog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:Scrumtopia.View"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:model="using:Scrumtopia.ViewModel"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+    <Page.DataContext>
+        <model:SprintBacklogVM />
+    </Page.DataContext>
+    <Page.Resources>
+        <DataTemplate x:Key="StoriesTemp">
+
+            <StackPanel
+                Margin="10,5"
+                Padding="5"
+                Background="{Binding Category.Category_Color}"
+                BorderBrush="DarkGray"
+                BorderThickness="2"
+                CornerRadius="10"
+                Orientation="Vertical">
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontWeight="Bold" Text="Story Name : " />
+                    <TextBlock Text="{Binding Story_Name}" />
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock FontWeight="Bold" Text="Story Description : " />
+                    <TextBlock Text="{Binding Story_description}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story Points : " />
+                    <TextBlock Text="{Binding Story_Points}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story Priority : " />
+                    <TextBlock Text="{Binding Story_Priority}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story State : " />
+                    <TextBlock Text="{Binding Story_State}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story Asignee : " />
+                    <TextBlock Text="{Binding Story_Asignee.User_Name}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock FontWeight="Bold" Text="Story Referee : " />
+                    <TextBlock Text="{Binding Story_Referee.User_Name}" />
+                </StackPanel>
+
+
+            </StackPanel>
+        </DataTemplate>
+    </Page.Resources>
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="10*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="5*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="20"
+                FontWeight="Bold"
+                Text="To Do" />
+            <GridView
+                x:Name="ToDo"
+                ItemTemplate="{StaticResource StoriesTemp}"
+                ItemsSource="{Binding TodoCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                AllowDrop="True"
+                CanDragItems="True"
+                CanReorderItems="True"
+                DragItemsStarting="StartDrag"
+                DragOver="DragOverEvent"
+                Drop="OnDrop"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="2">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="20"
+                FontWeight="Bold"
+                Text="Doing" />
+            <GridView
+                x:Name="Doing"
+                ItemTemplate="{StaticResource StoriesTemp}"
+                ItemsSource="{Binding DoingCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                AllowDrop="True"
+                CanDragItems="True"
+                CanReorderItems="True"
+                DragItemsStarting="StartDrag"
+                DragOver="DragOverEvent"
+                Drop="OnDrop"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="3">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="20"
+                FontWeight="Bold"
+                Text="Done" />
+            <GridView
+                x:Name="Done"
+                ItemTemplate="{StaticResource StoriesTemp}"
+                ItemsSource="{Binding DoneCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AllowDrop="True"
+                CanDragItems="True"
+                CanReorderItems="True"
+                DragItemsStarting="StartDrag"
+                DragOver="DragOverEvent"
+                Drop="OnDrop"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="4">
+            <TextBlock
+                HorizontalAlignment="Center"
+                FontSize="20"
+                FontWeight="Bold"
+                Text="Done Done" />
+            <GridView
+                x:Name="DoneDone"
+                ItemTemplate="{StaticResource StoriesTemp}"
+                ItemsSource="{Binding DoneDoneCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                AllowDrop="True"
+                CanDragItems="True"
+                CanReorderItems="True"
+                DragItemsStarting="StartDrag"
+                DragOver="DragOverEvent"
+                Drop="OnDrop"/>
+        </StackPanel>
+        <Button
+            Grid.Row="0"
+            Grid.Column="0"
+            Click="Back"
+            Content="Tilbage"
+            CornerRadius="10" />
+
+
+    </Grid>
+
+
+
+
+
+</Page>
