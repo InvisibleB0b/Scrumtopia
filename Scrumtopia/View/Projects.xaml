@@ -198,7 +198,10 @@
                     Orientation="Horizontal"
                     Spacing="10">
                     <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding ProjectButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-                    <Button Click="Open_Project" Content="Åben projekt" />
+                    <Button
+                        Click="Open_Project"
+                        Content="Åben projekt"
+                        Visibility="{Binding SelectedProState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Button
                         Click="startdel"
                         Content="Slet"
