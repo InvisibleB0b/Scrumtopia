@@ -43,7 +43,9 @@ namespace Scrumtopia.View
 
         private void DragOverEvent(object sender, DragEventArgs e)
         {
-            e.DragUIOverride.Caption = "Change State";
+            GridView gw = sender as GridView;
+            string name = gw.Name;
+            e.DragUIOverride.Caption = name;
             e.DragUIOverride.IsCaptionVisible = true;
             e.DragUIOverride.IsGlyphVisible = true;
             e.AcceptedOperation = DataPackageOperation.Move;

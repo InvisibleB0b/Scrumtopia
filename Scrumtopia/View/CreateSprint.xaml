@@ -139,6 +139,8 @@
                 Text="Backlog :" />
             <GridView
                 x:Name="Backlog"
+                MinHeight="200"
+                MaxHeight="600"
                 AllowDrop="True"
                 CanDragItems="True"
                 CanReorderItems="True"
@@ -161,6 +163,8 @@
                 Text="Sprint Backlog :" />
             <GridView
                 x:Name="SprintBacklog"
+                MinHeight="200"
+                MaxHeight="600"
                 AllowDrop="True"
                 CanDragItems="True"
                 CanReorderItems="True"
