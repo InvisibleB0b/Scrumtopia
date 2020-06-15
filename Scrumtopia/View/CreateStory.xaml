@@ -37,23 +37,23 @@
                     <TextBlock FontWeight="Bold" Text="Story Description : " />
                     <TextBlock Text="{Binding Story_description}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Points : " />
                     <TextBlock Text="{Binding Story_Points}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Priority : " />
                     <TextBlock Text="{Binding Story_Priority}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story State : " />
                     <TextBlock Text="{Binding Story_State}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Asignee : " />
                     <TextBlock Text="{Binding Story_Asignee.User_Name}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Referee : " />
                     <TextBlock Text="{Binding Story_Referee.User_Name}" />
                 </StackPanel>
@@ -88,7 +88,7 @@
             Grid.Row="0"
             Grid.Column="0"
             Click="Back"
-            Content="Tilbage"
+            Content="Back"
             CornerRadius="10" />
 
 
@@ -123,7 +123,8 @@
             </StackPanel>
             <StackPanel>
                 <TextBlock Text="Category" />
-                <GridView
+                <ListView
+                    MaxHeight="150"
                     ItemTemplate="{StaticResource CateTemp}"
                     ItemsSource="{Binding CategoriesForStory, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectedItem="{Binding Story_CategoryVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -131,15 +132,17 @@
             </StackPanel>
             <StackPanel>
                 <TextBlock Text="Assignee" />
-                <GridView
+                <ListView
+                    MaxHeight="150"
                     ItemTemplate="{StaticResource UsersTemp}"
                     ItemsSource="{Binding UsersInProject, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectedItem="{Binding AssigneeVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                     SelectionMode="Single" />
             </StackPanel>
-
-            <Button Command="{Binding CreateStoryCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding StoryButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
-            <Button Command="{Binding RemoveStoryCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Slet" />
+            <StackPanel Orientation="Horizontal">
+                <Button Command="{Binding CreateStoryCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding StoryButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <Button Command="{Binding RemoveStoryCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="Delete" />
+            </StackPanel>
         </StackPanel>
 
 
@@ -168,6 +171,7 @@
 
         <StackPanel Grid.Row="2" Grid.Column="3">
             <ListView
+                MaxHeight="300"
                 HorizontalAlignment="Right"
                 IsItemClickEnabled="True"
                 ItemClick="StartEditCategory"
@@ -176,11 +180,11 @@
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
                 <Button
                     Command="{Binding SletCatCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Content="Slet"
+                    Content="Delete"
                     Visibility="{Binding SletButtonState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Button
                     Command="{Binding AnnullerCatCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Content="Anuller"
+                    Content="Cancel"
                     Visibility="{Binding SletButtonState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
         </StackPanel>

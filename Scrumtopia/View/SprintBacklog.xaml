@@ -30,23 +30,23 @@
                     <TextBlock FontWeight="Bold" Text="Story Description : " />
                     <TextBlock Text="{Binding Story_description}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Points : " />
                     <TextBlock Text="{Binding Story_Points}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Priority : " />
                     <TextBlock Text="{Binding Story_Priority}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story State : " />
                     <TextBlock Text="{Binding Story_State}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Asignee : " />
                     <TextBlock Text="{Binding Story_Asignee.User_Name}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Referee : " />
                     <TextBlock Text="{Binding Story_Referee.User_Name}" />
                 </StackPanel>
@@ -80,14 +80,14 @@
                 Text="To Do" />
             <GridView
                 x:Name="ToDo"
-                ItemTemplate="{StaticResource StoriesTemp}"
-                ItemsSource="{Binding TodoCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 AllowDrop="True"
                 CanDragItems="True"
                 CanReorderItems="True"
                 DragItemsStarting="StartDrag"
                 DragOver="DragOverEvent"
-                Drop="OnDrop"/>
+                Drop="OnDrop"
+                ItemTemplate="{StaticResource StoriesTemp}"
+                ItemsSource="{Binding TodoCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="2">
             <TextBlock
@@ -97,14 +97,14 @@
                 Text="Doing" />
             <GridView
                 x:Name="Doing"
-                ItemTemplate="{StaticResource StoriesTemp}"
-                ItemsSource="{Binding DoingCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                 AllowDrop="True"
                 CanDragItems="True"
                 CanReorderItems="True"
                 DragItemsStarting="StartDrag"
                 DragOver="DragOverEvent"
-                Drop="OnDrop"/>
+                Drop="OnDrop"
+                ItemTemplate="{StaticResource StoriesTemp}"
+                ItemsSource="{Binding DoingCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="3">
             <TextBlock
@@ -114,13 +114,14 @@
                 Text="Done" />
             <GridView
                 x:Name="Done"
-                ItemTemplate="{StaticResource StoriesTemp}"
-                ItemsSource="{Binding DoneCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AllowDrop="True"
+                AllowDrop="True"
                 CanDragItems="True"
                 CanReorderItems="True"
                 DragItemsStarting="StartDrag"
                 DragOver="DragOverEvent"
-                Drop="OnDrop"/>
+                Drop="OnDrop"
+                ItemTemplate="{StaticResource StoriesTemp}"
+                ItemsSource="{Binding DoneCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="4">
             <TextBlock
@@ -130,20 +131,20 @@
                 Text="Done Done" />
             <GridView
                 x:Name="DoneDone"
-                ItemTemplate="{StaticResource StoriesTemp}"
-                ItemsSource="{Binding DoneDoneCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                 AllowDrop="True"
                 CanDragItems="True"
                 CanReorderItems="True"
                 DragItemsStarting="StartDrag"
                 DragOver="DragOverEvent"
-                Drop="OnDrop"/>
+                Drop="OnDrop"
+                ItemTemplate="{StaticResource StoriesTemp}"
+                ItemsSource="{Binding DoneDoneCollection, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         </StackPanel>
         <Button
             Grid.Row="0"
             Grid.Column="0"
             Click="Back"
-            Content="Tilbage"
+            Content="Back"
             CornerRadius="10" />
 
 

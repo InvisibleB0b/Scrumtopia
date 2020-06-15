@@ -54,7 +54,7 @@
                     FontSize="15"
                     Text="Password : "
                     TextAlignment="Center" />
-                <TextBox Text="{Binding PasswordVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                <PasswordBox Password="{Binding PasswordVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
             <Button
                 Margin="10"

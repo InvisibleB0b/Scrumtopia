@@ -69,23 +69,23 @@
                     <TextBlock FontWeight="Bold" Text="Story Description : " />
                     <TextBlock Text="{Binding Story_description}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Points : " />
                     <TextBlock Text="{Binding Story_Points}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Priority : " />
                     <TextBlock Text="{Binding Story_Priority}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story State : " />
                     <TextBlock Text="{Binding Story_State}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Asignee : " />
                     <TextBlock Text="{Binding Story_Asignee.User_Name}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Referee : " />
                     <TextBlock Text="{Binding Story_Referee.User_Name}" />
                 </StackPanel>
@@ -168,18 +168,18 @@
                 BorderThickness="2">
 
                 <StackPanel Padding="10" Spacing="10">
-                    <TextBlock Text="Projekt Navn :" />
+                    <TextBlock Text="Project Name :" />
                     <TextBox Text="{Binding Project_NameVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
                 <StackPanel Padding="10" Spacing="10">
-                    <TextBlock Text="Projekt Beskrivelse :" />
+                    <TextBlock Text="Project Description :" />
                     <TextBox
                         AcceptsReturn="True"
                         Text="{Binding Project_DescriptionVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                         TextWrapping="Wrap" />
                 </StackPanel>
                 <StackPanel Padding="10">
-                    <TextBlock Text="Projekt Deltagere :" />
+                    <TextBlock Text="Project Participants :" />
                     <GridView
                         x:Name="AllUsers"
                         ItemTemplate="{StaticResource UsersTemp}"
@@ -187,7 +187,7 @@
                         SelectionMode="None" />
                 </StackPanel>
                 <StackPanel Padding="10" Spacing="10">
-                    <TextBlock Text="Projekt DeadLine :" />
+                    <TextBlock Text="Project DeadLine :" />
                     <DatePicker Date="{Binding Project_DeadlineDateVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <TimePicker Time="{Binding Project_DeadlineTimeVM, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 </StackPanel>
@@ -200,11 +200,11 @@
                     <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding ProjectButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Button
                         Click="Open_Project"
-                        Content="Åben projekt"
+                        Content="Open project"
                         Visibility="{Binding SelectedProState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                     <Button
                         Click="startdel"
-                        Content="Slet"
+                        Content="Delete"
                         Visibility="{Binding SelectedProState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
                 </StackPanel>
@@ -236,7 +236,7 @@
                     <TextBlock
                         FontSize="30"
                         FontWeight="Bold"
-                        Text="Dette er hvad der vil blive slettet :" />
+                        Text="Content to be deleted :" />
 
                     <StackPanel>
                         <TextBlock FontWeight="Bold" Text="Project Name : " />
@@ -265,11 +265,11 @@
                             SelectionMode="None" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <Button Click="Reset" Content="Anuller" />
+                        <Button Click="Reset" Content="Cancel" />
                         <Button
                             Click="Reset"
                             Command="{Binding DeleteProCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Content="Slet" />
+                            Content="Delete" />
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>

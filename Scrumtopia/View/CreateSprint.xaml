@@ -35,35 +35,35 @@
                         Text="Story Description : " />
                     <TextBlock FontSize="12" Text="{Binding Story_description}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock
                         FontSize="12"
                         FontWeight="Bold"
                         Text="Story Points : " />
                     <TextBlock FontSize="12" Text="{Binding Story_Points}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock
                         FontSize="12"
                         FontWeight="Bold"
                         Text="Story Priority : " />
                     <TextBlock FontSize="12" Text="{Binding Story_Priority}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock
                         FontSize="12"
                         FontWeight="Bold"
                         Text="Story State : " />
                     <TextBlock FontSize="12" Text="{Binding Story_State}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock
                         FontSize="12"
                         FontWeight="Bold"
                         Text="Story Asignee : " />
                     <TextBlock FontSize="12" Text="{Binding Story_Asignee.User_Name}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock
                         FontSize="12"
                         FontWeight="Bold"
@@ -123,7 +123,7 @@
             Grid.Row="0"
             Grid.Column="0"
             Click="Back"
-            Content="Tilbage"
+            Content="Back"
             CornerRadius="10" />
 
         <!--  Backlog  -->
@@ -196,7 +196,7 @@
                 <Button Command="{Binding CreateCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Content="{Binding SprintButton, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <Button
                     Command="{Binding SletCommand, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                    Content="Slet"
+                    Content="Delete"
                     Visibility="{Binding SletState, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             </StackPanel>
         </StackPanel>

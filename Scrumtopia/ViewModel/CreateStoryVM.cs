@@ -181,8 +181,8 @@ namespace Scrumtopia.ViewModel
             LeSingleton = Singleton.Instance;
             AssigneeVM = new ScrumUser(){User_Id = 0};
             UsersInProject = new ObservableCollection<ScrumUser>();
-            StoryButton = "Opret";
-            CatButton = "Opret";
+            StoryButton = "Create";
+            CatButton = "Create";
             SletButtonState = "Collapsed";
             SletCatCommand = new RelayCommand(DeleteCategory);
             AnnullerCatCommand = new RelayCommand(ResetCategory);
@@ -275,7 +275,7 @@ namespace Scrumtopia.ViewModel
         /// </summary>
         public void StartStoryEdit()
         {
-            StoryButton = "Ret";
+            StoryButton = "Edit";
             CreateStoryCommand = new RelayCommand(Edit);
 
             Story_PointsVM = SelectedStory.Story_Points;
@@ -353,7 +353,7 @@ namespace Scrumtopia.ViewModel
         /// </summary>
         public void StoryReset()
         {
-            StoryButton = "Opret";
+            StoryButton = "Create";
             CreateStoryCommand = new RelayCommand(CreateStory);
 
             Story_PointsVM = 0;
@@ -400,7 +400,7 @@ namespace Scrumtopia.ViewModel
             Category_ColorVM = SelectedCategory.Category_Color;
             SletButtonState = "Visible";
             CreateCatCommand = new RelayCommand(EditCat);
-            CatButton = "Ret";
+            CatButton = "Edit";
         }
 
         /// <summary>
@@ -475,7 +475,7 @@ namespace Scrumtopia.ViewModel
             SelectedCategory = null;
             SletButtonState = "Collapsed";
             Category_ColorVM = "#FFFFFFFF";
-            CatButton = "Opret";
+            CatButton = "Create";
             CreateCatCommand = new RelayCommand(CreatCategory);
         }
 

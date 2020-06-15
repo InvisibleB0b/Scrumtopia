@@ -31,23 +31,23 @@
                     <TextBlock FontWeight="Bold" Text="Story Description : " />
                     <TextBlock Text="{Binding Story_description}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Points : " />
                     <TextBlock Text="{Binding Story_Points}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Priority : " />
                     <TextBlock Text="{Binding Story_Priority}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story State : " />
                     <TextBlock Text="{Binding Story_State}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Asignee : " />
                     <TextBlock Text="{Binding Story_Asignee.User_Name}" />
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Vertical">
                     <TextBlock FontWeight="Bold" Text="Story Referee : " />
                     <TextBlock Text="{Binding Story_Referee.User_Name}" />
                 </StackPanel>
@@ -102,7 +102,7 @@
             Grid.Row="0"
             Grid.Column="0"
             Click="Back"
-            Content="Tilbage"
+            Content="Back"
             CornerRadius="10" />
 
         <Border
@@ -139,7 +139,7 @@
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Click="GotoCreateSprint"
-            Content="Opret/Rediger Sprints"
+            Content="Create/Edit Sprints"
             CornerRadius="10" />
         <Button
             Grid.Row="2"
@@ -150,7 +150,7 @@
             HorizontalContentAlignment="Center"
             VerticalContentAlignment="Center"
             Click="GotoCreateStory"
-            Content="Opret/Rediger Stories"
+            Content="Create/Edit Stories"
             CornerRadius="10" />
     </Grid>
 </Page>

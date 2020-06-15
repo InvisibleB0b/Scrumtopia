@@ -115,7 +115,7 @@ namespace Scrumtopia.ViewModel
             Project_DeadlineDateVM = TimeConverter.ConvertToDate(DateTime.Now.AddDays(14));
             Project_DeadlineTimeVM = TimeConverter.ConvertToTime(DateTime.Now);
             selectedUsers = new List<ScrumUser>();
-            ProjectButton = "Opret";
+            ProjectButton = "Create";
             SelectedProState = "Collapsed";
             SprintsInProj = new ObservableCollection<Sprint>();
             StoryInProj = new ObservableCollection<Story>();
@@ -265,7 +265,7 @@ namespace Scrumtopia.ViewModel
 
         public void StartProjectEdit()
         {
-            ProjectButton = "Ret";
+            ProjectButton = "Edit";
             SelectedProState = "Visible";
 
             CreateCommand = new RelayCommand(Edit);
@@ -322,7 +322,7 @@ namespace Scrumtopia.ViewModel
             Project_DeadlineDateVM = TimeConverter.ConvertToDate(DateTime.Now.AddDays(14));
             Project_DeadlineTimeVM = TimeConverter.ConvertToTime(DateTime.Now);
             selectedUsers = new List<ScrumUser>();
-            ProjectButton = "Opret";
+            ProjectButton = "Create";
             SelectedProState = "Collapsed";
             CreateCommand = new RelayCommand(CreateProject);
             

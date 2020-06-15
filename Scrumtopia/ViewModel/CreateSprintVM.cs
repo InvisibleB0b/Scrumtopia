@@ -139,7 +139,7 @@ namespace Scrumtopia.ViewModel
             /// </summary>
             public async void Load()
         {
-            SprintButton = "Opret";
+            SprintButton = "Create";
             Sprint_StartDate = DateTimeOffset.Now;
             Sprint_EndDate = DateTimeOffset.Now.AddDays(14);
 
@@ -280,7 +280,7 @@ namespace Scrumtopia.ViewModel
             SprintReset();
 
             SletState = "Visible";
-            SprintButton = "Ret";
+            SprintButton = "Edit";
             CreateCommand = new RelayCommand(EditSprint);
             Sprint_StartDate = TimeConverter.ConvertToDate(SelectedSprint.Sprint_Start);
             Sprint_StartTime = TimeConverter.ConvertToTime(SelectedSprint.Sprint_Start);
