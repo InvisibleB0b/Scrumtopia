@@ -355,6 +355,7 @@ namespace Scrumtopia.ViewModel
             Backlog.Clear();
             Sprint_GoalVM = "";
             SletState = "Collapsed";
+            CreateCommand = new RelayCommand(Create);
             Load();
         }
 
